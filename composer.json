@@ -4,7 +4,6 @@
     "repositories": [
         { "type": "git",  "url": "https://github.com/fardus/traits-symfony.git" }
     ],
-    
     "require": {
         "php": "^7.4",
         "ext-ctype": "*",
