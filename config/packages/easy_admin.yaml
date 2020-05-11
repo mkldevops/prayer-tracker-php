@@ -1,0 +1,50 @@
+easy_admin:
+    list:
+        actions:
+            - { name: 'show', icon: 'file', label: false }
+            - { name: 'edit', icon: 'pencil', label: false }
+            - { name: 'delete', icon: 'trash', label: false }
+    entities:
+#        # List the entity class name you want to manage
+        PrayerName:
+            class: App\Entity\PrayerName
+            form:
+                fields:
+                    - name
+                    - description
+                    - enable
+        Prayer:
+            class: App\Entity\Prayer
+        Program:
+            class: App\Entity\Program
+        Objective:
+            class: App\Entity\Objective
+            list:
+                fields:
+                    - id
+                    - user
+                    - program
+                    - prayerName
+                    - number
+                    - enable
+                    - createdAt
+            form:
+                fields:
+                    - program
+                    - prayerName
+                    - number
+                    - enable
+
+        User:
+            class: App\Entity\User
+            form:
+                fields:
+                    - username
+                    -   property: 'roles'
+                        type: 'choice'
+                        type_options:
+                            mapped: true
+                            expanded: true
+                            multiple: true
+                            choices: { 'User': 'ROLE_USER', 'Admin': 'ROLE_ADMIN' }
+                    - enable

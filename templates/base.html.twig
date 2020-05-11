@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale }}">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>{% block title %}Program Prayer{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('bower/fontawesome/css/all.css') }}">
+            <link rel="stylesheet" href="{{ asset('bower/bootstrap/dist/css/bootstrap.min.css') }}">
+        {% endblock %}
+    </head>
+    <body class="d-flex flex-column h-100" cz-shortcut-listen="true">
+        <header style="margin-bottom: 5rem">
+            <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
+                <a class="navbar-brand" href="#"><i class="far fa-calendar-check"></i> Prayer Program</a>
+                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse" id="navbarCollapse" style="">
+                    <ul class="navbar-nav mr-auto">
+                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('app_home') }}">{{ 'Home'|trans }}</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ path('easyadmin') }}">{{ 'Admin'|trans }}</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <a href="{{ path('app_logout') }}" class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i> {{ 'Logout'|trans }}</a>
+                    {% else %}
+                        <a class="btn btn-outline-light m-2 my-sm-0" href="{{ path('app_login') }}"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans }}</a>
+                        <a class="btn btn-outline-light m-2 my-sm-0" href="{{ path('app_logout') }}"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans }}</a>
+                    {% endif %}
+                </div>
+            </nav>
+        </header>
+
+        <main role="main" class="container-fluid">
+            {% block body %}{% endblock %}
+        </main>
+        <footer class="container text-center fixed-bottom mb-3">&copy; Tech&Call 2020 - Prayer Program</footer>
+        {% block javascripts %}
+            <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
+            <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+            <script src="{{ asset('bower/jquery/dist/jquery.min.js') }}"></script>
+            <script src="{{ asset('bower/popper.js/src/popper.js') }}"></script>
+            <script src="{{ asset('bower/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+        {% endblock %}
+    </body>
+</html>

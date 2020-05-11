@@ -1,0 +1,60 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'Program'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="text-center">
+        <div class="row">
+            <div class="col-2">
+                <a href="{{ path('program_index') }}"><i class="fas fa-list"></i></a>
+            </div>
+            <h2 class="col-8">{{ 'Program "%name%"'|trans({'%name%' : program }) }}</h2>
+            <div class="col-2">
+                <div><a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-link"><i class="fas fa-edit"></i></a></div>
+                <div>{{ include('program/_delete_form.html.twig') }}</div>
+            </div>
+        </div>
+        <div>
+            <small class="text-muted ">
+                <span>#{{ program.id }} - </span>
+                <span class="font-italic">{{ 'Created at %date%'|trans({'%date%' : program.createdAt.format('d/m/Y H:i:s') }) }}</span>
+            </small>
+        </div>
+
+        <div class="my-5 offset-sm-4 col-sm-4">
+            {% include 'program/_modal_objective.html.twig' %}
+
+            {% for objective in program.objectives %}
+                {% include 'objective/_counter.html.twig' %}
+            {% endfor %}
+        </div>
+
+
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script src="{{ asset('js/prayer.js') }}"></script>
+    <script type="application/javascript">
+        $(function () {
+            $('#add-objective').click(function (event) {
+                event.preventDefault();
+                let program = $(this).data('program')
+                let prayerName = $('#objective_prayerName').val()
+                let number = $('#objective_number').val()
+                let modal = $(this).parents('.modal')
+
+                $.post(Routing.generate('api_objective_new', { id : program }), { prayerName : prayerName, number : number})
+                    .done(function (response) {
+                        modal.modal('hide')
+                        document.location.reload()
+                    })
+                    .fail(function (response, ctx) {
+                        console.log(response, ctx)
+                    })
+            })
+        })
+    </script>
+{% endblock %}
