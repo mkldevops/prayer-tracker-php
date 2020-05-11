@@ -21,6 +21,7 @@
     "fontawesome": "font-awesome#^5.13.0",
     "vue": "^2.6.11",
     "moment": "^2.25.2",
-    "bootstrap": "^4.4.1"
+    "bootstrap": "^4.4.1",
+    "chart.js": "chartjs#^2.9.3"
   }
 }

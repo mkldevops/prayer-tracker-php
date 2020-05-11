@@ -51,4 +51,23 @@ class PrayerManager
             'objective' => $objective->getId()
         ];
     }
+
+    public function stats(Objective $objective, int $daysAgo)
+    {
+        $from = (new \DateTime())->setTimestamp(strtotime(sprintf("%d days ago", $daysAgo)));
+        $current = clone $from;
+        $data = [];
+        while ($current->getTimestamp() <= time()) {
+            $data[$current->format('Y-m-d')] = 0;
+            $current->add(new \DateInterval('P1D'));
+        }
+
+        $result = $this->prayerRepository->statsOfObjective($objective, $from);
+        foreach ($result as $item)
+        {
+            $data[$item['date']] = $item['nb'];
+        }
+
+        return $data;
+    }
 }

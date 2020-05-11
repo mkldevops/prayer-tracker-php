@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Objective;
 use App\Form\Objective1Type;
 use App\Repository\ObjectiveRepository;
+use App\Repository\PrayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,11 +20,11 @@ class ObjectiveController extends AbstractController
     /**
      * @Route("/{id}", name="objective_show", methods={"GET"})
      */
-    public function show(Objective $objective): Response
+    public function show(Objective $objective, PrayerRepository $prayerRepository): Response
     {
-        return $this->render('objective/show.html.twig', [
-            'objective' => $objective,
-        ]);
+        $lastPrayers = $prayerRepository->findBy(['objective' => $objective], ['createdAt' => 'desc'], 10);
+
+        return $this->render('objective/show.html.twig', compact('lastPrayers', 'objective'));
     }
 
     /**
