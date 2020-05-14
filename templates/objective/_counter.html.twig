@@ -1,19 +1,22 @@
 {% set count = objective.prayers.count %}
 <div class="row my-2">
     <div class="btn-group btn-group-lg col-sm-12" role="group" aria-label="...">
-        <button class="add-prayer btn btn-lg btn-primary col-11"
+        <div class="add-prayer btn btn-lg btn-primary col-11"
                 data-objective="{{ objective.id }}"
         >
-            <strong>{{ objective.prayerName }}</strong>
-            <span class="d-block small">
-                <span class="float-left">
-
-
-                    <span class="objective-number">{{ count }}</span> / {{ objective.number }}
-                </span>
-                <span class="percent float-right">{{ (count / objective.number * 100)|number_format(2) }} %</span>
-            </span>
-        </button>
+            <div class="small">{{ objective.prayerName }}</div>
+            <div class="row">
+                <div class="small col-4 text-left">
+                    <span class="objective-count">{{ count }}</span>/{{ objective.number }}
+                </div>
+                <div class="col-4">
+                    <strong class="objective-sub font-weight-bold h3">{{ objective.number - count }}</strong>
+                </div>
+                <div class="small col-4 text-right">
+                    <span class="objective-percent">{{ (count / objective.number * 100)|number_format(2) }}</span>%
+                </div>
+            </div>
+        </div>
         <a href="{{ path('objective_show', {'id': objective.id }) }}" class="btn btn-primary col-1"  role="button" aria-pressed="true">
             <i class="fas fa-info align-bottom"></i>
         </a>

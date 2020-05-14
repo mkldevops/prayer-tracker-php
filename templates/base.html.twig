@@ -7,6 +7,11 @@
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('bower/fontawesome/css/all.css') }}">
             <link rel="stylesheet" href="{{ asset('bower/bootstrap/dist/css/bootstrap.min.css') }}">
+            <style>
+                .small, small {
+                    font-size: 70%;
+                }
+            </style>
         {% endblock %}
     </head>
     <body class="d-flex flex-column h-100" cz-shortcut-listen="true">
@@ -40,7 +45,7 @@
         <main role="main" class="container-fluid">
             {% block body %}{% endblock %}
         </main>
-        <footer class="container text-center fixed-bottom mb-3">&copy; Tech&Call 2020 - Prayer Program</footer>
+        <footer class="container text-center mb-3">&copy; Tech&Call 2020 - Prayer Program</footer>
         {% block javascripts %}
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>

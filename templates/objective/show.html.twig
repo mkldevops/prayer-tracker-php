@@ -5,14 +5,15 @@
 {% block body %}
     <div id="objective" data-id="{{ objective.id }}" class="col-sm-6 offset-sm-3">
         <div class="row text-center">
-            <div class="col-1 h1">
+            <div class="col-2 h1">
                 <a href="{{ path('program_show', {'id': objective.program.id}) }}"><i class="fas fa-caret-left"></i></a>
             </div>
-            <div class="col-10">
-                <h1>{{ objective }}</h1>
-                <h6 class="text-muted"><span class="text-info">{{ 'Objective'|trans }}</span> - #{{ objective.id }} {{ 'created at %date%'|trans({'%date%' : objective.createdAt.format('d/m/Y H:i') }) }}</h6>
+            <div class="col-8">
+                <h1>{{ objective.prayerName }}</h1>
+                <h6><span class="text-info">{{ objective.program }}</span></h6>
+                <h6 class="small text-muted">#{{ objective.id }} {{ 'added at %date%'|trans({'%date%' : objective.createdAt.format('d/m/Y H:i') }) }}</h6>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <div><a href="{{ path('objective_edit', {'id': objective.id}) }}" class="btn btn-link"><i class="fas fa-edit"></i></a></div>
                 {{ include('objective/_delete_form.html.twig') }}
             </div>
@@ -30,7 +31,7 @@
         </ul>
         <div class="tab-content" id="myTabContent">
             <div class="tab-pane fade show active" id="pills-stats" role="tabpanel" aria-labelledby="pills-stats-tab">
-                <div style="width: 75%" class="m-auto">
+                <div class="chart-container" style="position: relative;  width:100%">
                     <canvas id="canvas"></canvas>
                 </div>
             </div>

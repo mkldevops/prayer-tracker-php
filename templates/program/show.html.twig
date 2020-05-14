@@ -3,13 +3,16 @@
 {% block title %}{{ 'Program'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="text-center">
+    <div class="offset-sm-4 col-sm-4 text-center">
         <div class="row">
-            <div class="col-2">
-                <a href="{{ path('program_index') }}"><i class="fas fa-caret-left"></i></a>
+            <div class="col-2 text-left">
+                <a href="{{ path('program_index') }}" class="h1"><i class="fas fa-caret-left"></i></a>
             </div>
-            <h2 class="col-8">{{ 'Program "%name%"'|trans({'%name%' : program }) }}</h2>
-            <div class="col-2">
+            <div class="col-8">
+                <h6 class="text-muted small">{{ 'Program'|trans }}</h6>
+                <h2 class="text-info font-weight-bold">{{ program }}</h2>
+            </div>
+            <div class="col-2 text-right">
                 <div><a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-link"><i class="fas fa-edit"></i></a></div>
                 <div>{{ include('program/_delete_form.html.twig') }}</div>
             </div>
@@ -21,16 +24,44 @@
             </small>
         </div>
 
-        <div class="my-5 offset-sm-4 col-sm-4">
+        <div class="my-5">
             {% include 'program/_modal_objective.html.twig' %}
 
+            {% set accomplished, total = 0, 0 %}
             {% for objective in program.objectives %}
+                {% set accomplished = accomplished + objective.prayers.count %}
+                {% set total = total + objective.number %}
                 {% include 'objective/_counter.html.twig' %}
             {% endfor %}
+
+            <div class="stats mt-4">
+                <h1 id="program-sub">{{ total - accomplished }}</h1>
+                <div class="h6 row">
+                    <div class="col-5"> <span id="program-count">{{ accomplished }}</span> / {{ total }}</div>
+                    <div class="col-2"></div>
+                    <div class="col-5">
+                        <span id="program-percent">{{ ( accomplished / total * 100)|round(2) }}</span>%
+                    </div>
+                </div>
+            </div>
         </div>
 
 
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        .btn-circle.btn-md {
+            width: 50px;
+            height: 50px;
+            padding: 7px 10px;
+            border-radius: 25px;
+            font-size: 10px;
+            text-align: center;
+        }
+    </style>
 {% endblock %}
 
 {% block javascripts %}

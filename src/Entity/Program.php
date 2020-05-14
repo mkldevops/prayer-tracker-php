@@ -38,6 +38,11 @@ class Program
      */
     private ?User $user = null;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $dayObjective = 1;
+
     public function __construct()
     {
         $this->enable = true;
@@ -93,6 +98,18 @@ class Program
     public function setUser(?UserInterface $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getDayObjective(): ?int
+    {
+        return $this->dayObjective;
+    }
+
+    public function setDayObjective(int $dayObjective): self
+    {
+        $this->dayObjective = $dayObjective;
 
         return $this;
     }

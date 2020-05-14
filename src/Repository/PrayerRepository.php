@@ -4,9 +4,14 @@ namespace App\Repository;
 
 use App\Entity\Objective;
 use App\Entity\Prayer;
+use App\Entity\Program;
+use App\Exception\AppException;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Fardus\Traits\Symfony\Manager\LoggerTrait;
 
 /**
  * @method Prayer|null find($id, $lockMode = null, $lockVersion = null)
@@ -16,12 +21,14 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class PrayerRepository extends ServiceEntityRepository
 {
+    use LoggerTrait;
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Prayer::class);
     }
 
-    public function statsOfObjective(Objective $objective, \DateTime $from)
+    public function statsOfObjective(Objective $objective, DateTime $from)
     {
         return $this->createQueryBuilder('p')
             ->select('DATE(p.createdAt) as date')
@@ -33,5 +40,23 @@ class PrayerRepository extends ServiceEntityRepository
             ->groupBy('date')
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function countProgram(Program $program) : int
+    {
+        try {
+            return (int)$this->createQueryBuilder('p')
+                ->select('COUNT(p) as count')
+                ->innerJoin('p.objective', 'o')
+                ->where('o.program = :o_program')
+                ->setParameter('o_program', $program)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException | NoResultException $e) {
+            throw new AppException($e->getMessage(), 0, $e);
+        }
     }
 }

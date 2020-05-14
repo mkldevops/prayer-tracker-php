@@ -3,7 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Objective;
+use App\Entity\Program;
+use App\Exception\AppException;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +23,20 @@ class ObjectiveRepository extends ServiceEntityRepository
         parent::__construct($registry, Objective::class);
     }
 
-    // /**
-    //  * @return Objective[] Returns an array of Objective objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @throws AppException
+     */
+    public function sumNumberOfProgram(Program $program) : int
     {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('o.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+        try {
+            return (int) $this->createQueryBuilder('o')
+                ->select('SUM(o.number) as number')
+                ->where('o.program = :o_program')
+                ->setParameter('o_program', $program)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException | NoResultException $e) {
+            throw new AppException($e->getMessage(), 0, $e);
+        }
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Objective
-    {
-        return $this->createQueryBuilder('o')
-            ->andWhere('o.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

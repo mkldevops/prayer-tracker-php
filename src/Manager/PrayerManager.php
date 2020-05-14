@@ -6,6 +6,7 @@ use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Entity\User;
 use App\Exception\AppException;
+use App\Repository\ObjectiveRepository;
 use App\Repository\PrayerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Fardus\Traits\Symfony\Manager\SerializerTrait;
@@ -18,12 +19,14 @@ class PrayerManager
     use LoggerTrait;
 
     public PrayerRepository $prayerRepository;
+    public ObjectiveRepository $objectiveRepository;
     public EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, PrayerRepository $prayerRepository)
+    public function __construct(EntityManagerInterface $entityManager, PrayerRepository $prayerRepository, ObjectiveRepository $objectiveRepository)
     {
         $this->entityManager = $entityManager;
         $this->prayerRepository = $prayerRepository;
+        $this->objectiveRepository = $objectiveRepository;
     }
 
     /**
@@ -45,10 +48,22 @@ class PrayerManager
         $this->entityManager->persist($prayer);
         $this->entityManager->flush();
 
+        $countObjective = $this->prayerRepository->count(['objective' => $objective, 'prayerName' => $objective->getPrayerName()]);
+        $countProgram = $this->prayerRepository->countProgram($objective->getProgram());
+        $numberProgram = $this->objectiveRepository->sumNumberOfProgram($objective->getProgram());
+
         return [
-            'count' => $this->prayerRepository->count(['objective' => $objective, 'prayerName' => $objective->getPrayerName()]),
-            'number' => $objective->getNumber(),
-            'objective' => $objective->getId()
+            'objective' => [
+                'count' => $countObjective,
+                'number' => $objective->getNumber(),
+                'percent' => round(($countObjective / $objective->getNumber() * 100), 2),
+                'sub' => $objective->getNumber() - $countObjective,
+                'objective' => $objective->getId()
+            ],
+            'program' => [
+                'count' => $countProgram,
+                'number' => $numberProgram,
+            ]
         ];
     }
 
@@ -58,14 +73,14 @@ class PrayerManager
         $current = clone $from;
         $data = [];
         while ($current->getTimestamp() <= time()) {
-            $data[$current->format('Y-m-d')] = 0;
+            $data[$current->format('d M')] = 0;
             $current->add(new \DateInterval('P1D'));
         }
 
         $result = $this->prayerRepository->statsOfObjective($objective, $from);
-        foreach ($result as $item)
-        {
-            $data[$item['date']] = $item['nb'];
+        foreach ($result as $item) {
+            $date = (new \DateTime($item['date']))->format('d M');
+            $data[$date] = $item['nb'];
         }
 
         return $data;
