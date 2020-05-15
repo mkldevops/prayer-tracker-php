@@ -38,7 +38,7 @@ class PrayerApiController extends AbstractController
     public function stats(Objective $objective, PrayerManager $prayerManager)
     {
         try {
-            $response = $this->json($prayerManager->stats($objective, 10));
+            $response = $this->json($prayerManager->stats($objective, 5));
         } catch (\Exception $exception) {
             $this->logger->error(__FUNCTION__, compact('exception'));
             $response = $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);

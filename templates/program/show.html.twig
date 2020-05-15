@@ -26,24 +26,30 @@
 
         <div class="my-5">
             {% include 'program/_modal_objective.html.twig' %}
+            {% if program.objectives.count  %}
+                {% set accomplished, total = 0, 0 %}
+                {% for objective in program.objectives %}
+                    {% set accomplished = accomplished + objective.prayers.count %}
+                    {% set total = total + objective.number %}
+                    {% include 'objective/_counter.html.twig' %}
+                {% endfor %}
 
-            {% set accomplished, total = 0, 0 %}
-            {% for objective in program.objectives %}
-                {% set accomplished = accomplished + objective.prayers.count %}
-                {% set total = total + objective.number %}
-                {% include 'objective/_counter.html.twig' %}
-            {% endfor %}
 
-            <div class="stats mt-4">
-                <h1 id="program-sub">{{ total - accomplished }}</h1>
-                <div class="h6 row">
-                    <div class="col-5"> <span id="program-count">{{ accomplished }}</span> / {{ total }}</div>
-                    <div class="col-2"></div>
-                    <div class="col-5">
-                        <span id="program-percent">{{ ( accomplished / total * 100)|round(2) }}</span>%
+                <div class="stats mt-4">
+                    <h1 id="program-sub">{{ total - accomplished }}</h1>
+                    <div class="h6 row">
+                        <div class="col-5"> <span id="program-count">{{ accomplished }}</span> / {{ total }}</div>
+                        <div class="col-2"></div>
+                        <div class="col-5">
+                            <span id="program-percent">{{ ( accomplished / total * 100)|round(2) }}</span>%
+                        </div>
                     </div>
                 </div>
-            </div>
+            {% else %}
+                <p class="h5 text-primary font-weight-bold">{{ 'Your Program is added'|trans }}</p>
+                <p>{{ 'program_show_without_objective'|trans }}</p>
+                <button type="button" class="btn btn-danger btn-block btn-lg" data-toggle="modal" data-target="#exampleModal"><i class="fas fa-plus"></i> {{ 'Add new objective'|trans }}</button>
+            {% endif %}
         </div>
 
 

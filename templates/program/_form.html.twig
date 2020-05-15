@@ -1,4 +1,6 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-outline-dark"><i class="far fa-save"></i> {{ button_label|default('Save'|trans) }}</button>
+    <div class="form-group">
+        {{ form_widget(form.name) }}
+    </div>
+    <button class="btn btn-lg btn-block btn-info"><i class="fas fa-save"></i> {{ button_label|default('Save'|trans) }}</button>
 {{ form_end(form) }}

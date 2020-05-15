@@ -28,7 +28,25 @@ show: Afficher
 Home: Accueil
 Admin: Admin
 Register: Inscription
-'Add Objective on program "%program%"': '__Add Objective on program "%program%"'
+'Add Objective on program "%program%"': 'Ajouter un objectif au programme <strong>"%program%"</strong>'
 Close: Fermer
 Agree terms : Accepter les conditions
 Plain Password: Mot de passe
+Create new Program: 'Ajouter un programme'
+Cancel: 'Annuler'
+Name: Nom
+Add: Ajouter
+User: Utilisateur
+ID: ID
+Created at: Ajouté le
+Accomplished at: Accompli le
+Prayer name: Type de prière
+PrayerName: Type de prière
+Number: Nombre
+Homepage : Page d'accueil
+Name of program: Nom du programme
+Create new: 'Ajouter un programme'
+Program list: 'Liste des programmes'
+Your Program is added: 'Ton programme est maintenant disponible'
+program_show_without_objective: 'Commence maintenant par ajouter un premier objectif'
+Add new objective: 'Ajouter un objectif'

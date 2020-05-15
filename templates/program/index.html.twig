@@ -3,39 +3,41 @@
 {% block title %}Program index{% endblock %}
 
 {% block body %}
-    <h1>Program index</h1>
+    <div class="text-center">
 
-    <table class="table">
-        <thead>
+        <h1 class="mb-4 font-weight-bold">{{ 'Program list'|trans }}</h1>
+
+        <a href="{{ path('program_new') }}" class="btn btn-info btn-block btn-lg"><i class="fas fa-plus"></i> {{ 'Create new'|trans }}</a>
+
+        <table class="mt-5 table table-sm">
+            <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>Enable</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
+                <th></th>
+                <th></th>
             </tr>
-        </thead>
-        <tbody>
-        {% for program in programs %}
-            <tr>
-                <td>{{ program.id }}</td>
-                <td>{{ program.name }}</td>
-                <td>{{ program.enable ? 'Yes' : 'No' }}</td>
-                <td>{{ program.createdAt ? program.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ program.updatedAt ? program.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('program_show', {'id': program.id}) }}">show</a>
-                    <a href="{{ path('program_edit', {'id': program.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for program in programs %}
+                <tr>
+                    <td>{{ program.id }}</td>
+                    <td><a href="{{ path('program_show', {'id': program.id}) }}">{{ program.name }}</a></td>
+                    <td>
+                        <a href="{{ path('program_show', {'id': program.id}) }}"><i class="fas fa-file-alt"></i></a>
+                    </td>
+                    <td>
+                        <a href="{{ path('program_edit', {'id': program.id}) }}"><i class="fas fa-edit"></i></a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="6">no records found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <a href="{{ path('program_new') }}">Create new</a>
+
+    </div>
 {% endblock %}

@@ -1,4 +1,18 @@
 easy_admin:
+    site_name: '<strong>ADMIN PRAYER PROGRAM</strong>'
+    formats:
+        date: 'd/m/Y'
+        datetime: 'd/m/Y h:i A e'
+        number: '%0.2f'
+    design:
+        brand_color: '#008cba'
+        menu:
+            - { label: 'Homepage', route: 'app_home', icon: 'home' }
+            - Prayer
+            - Program
+            - Objective
+            - PrayerName
+            - { entity: 'User', icon: 'user' }
     list:
         actions:
             - { name: 'show', icon: 'file', label: false }

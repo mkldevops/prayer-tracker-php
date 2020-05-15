@@ -15,7 +15,7 @@
                 <div class="mt-5"><a href="{{ path('app_register') }}" class="small btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans|upper }}</a></div>
             {% else %}
                 <h3 class="text-info">{{ 'Hello %user%'|trans({ '%user%' : app.user }) }}</h3>
-                <ul>
+                <ul class="list-group">
                     {% for program in programs  %}
                         <li>{{ program|capitalize }} <a href="{{ path('program_show', {'id': program.id }) }}">{{ 'show'|trans }}</a></li>
                     {% else %}
@@ -23,7 +23,7 @@
                     {% endfor %}
                 </ul>
 
-                <a href="{{ path('program_new') }}" class="btn btn-lg btn-block btn-primary">{{ 'New Program'|trans }}</a>
+                <a href="{{ path('program_new') }}" class="btn btn-lg btn-block btn-info mt-3">{{ 'New Program'|trans }}</a>
             {% endif %}
         </div>
     </div>
