@@ -15,16 +15,13 @@
             </div>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal text-center">{{ 'Please sign in'|trans }}</h1>
-        <div class="form-group">
-            <label for="inputUsername">{{ 'Username'|trans }}</label>
-            <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" required autofocus>
+        <h1 class="h3 my-3 font-weight-bold text-center">{{ 'Please sign in'|trans }}</h1>
+        <div class="mt-5 form-group">
+            <input type="text" value="{{ last_username }}" name="username" placeholder="{{ 'Username'|trans }}" id="inputUsername" class="form-control" required autofocus>
         </div>
-        <div class="form-group">
-            <label for="inputPassword">{{ 'Password'|trans }}</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" required>
+        <div class="my-4 form-group">
+            <input type="password" name="password" id="inputPassword" placeholder="{{ 'Password'|trans }}" class="form-control" required>
         </div>
-
 
         <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 

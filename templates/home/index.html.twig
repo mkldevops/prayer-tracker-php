@@ -5,25 +5,27 @@
         <div class="text-center"><small>{{ '%count% users'|trans({'%count%' : users }) }}</small></div>
         <h1 class="mt-1"><i class="far fa-calendar-check"></i></h1>
         <h2 class="font-weight-bold">PRAYER PROGRAM</h2>
-        <p>
-            L'application est un outils d'aide dans le suivi dans tes prières. Il te permettra de gerer des prières a rattraper ou accomplir des prières sounnah en definissant un programme avec des objectifs à atteindre.
-        </p>
-        <div class="offset-sm-3 col-sm-6">
+        <p>L'application est un outil d'aide dans le suivi dans tes prières.</p>
+        <p>Il te permettra de gerer des prières a rattraper ou accomplir des prières sounnah via un programme comportant des objectifs à atteindre.</p>
+        <div class="offset-sm-3 col-sm-6 mt-4">
             {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div><a href="{{ path('app_login') }}" class="btn btn-dark btn-block btn-lg"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans|upper }}</a></div>
+                <div><a href="{{ path('app_login') }}" class="btn btn-info btn-block btn-lg"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans|upper }}</a></div>
 
-                <div class="mt-5"><a href="{{ path('app_register') }}" class="small btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans|upper }}</a></div>
+                <div class="mt-4"><a href="{{ path('app_register') }}" class="small btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans|upper }}</a></div>
             {% else %}
                 <h3 class="text-info">{{ 'Hello %user%'|trans({ '%user%' : app.user }) }}</h3>
-                <ul class="list-group">
+                <ul class="my-3 list-group">
                     {% for program in programs  %}
-                        <li>{{ program|capitalize }} <a href="{{ path('program_show', {'id': program.id }) }}">{{ 'show'|trans }}</a></li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <a href="{{ path('program_show', {'id': program.id }) }}" title="{{ 'show'|trans }}">{{ program|capitalize }}</a>
+                            <a href="{{ path('program_show', {'id': program.id }) }}" class="badge badge-primary badge-pill" title="{{ 'show'|trans }}"><i class="fas fa-clipboard-list"></i></a>
+                        </li>
                     {% else %}
                         {{ 'Create your first program'|trans }}
                     {% endfor %}
                 </ul>
 
-                <a href="{{ path('program_new') }}" class="btn btn-lg btn-block btn-info mt-3">{{ 'New Program'|trans }}</a>
+                <a href="{{ path('program_new') }}" class="btn btn-lg btn-block btn-info mt-3"><i class="fas fa-plus"></i> {{ 'New Program'|trans }}</a>
             {% endif %}
         </div>
     </div>

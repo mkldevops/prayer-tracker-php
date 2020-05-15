@@ -4,25 +4,7 @@
 
 {% block body %}
     <div class="offset-sm-4 col-sm-4 text-center">
-        <div class="row">
-            <div class="col-2 text-left">
-                <a href="{{ path('program_index') }}" class="h1"><i class="fas fa-caret-left"></i></a>
-            </div>
-            <div class="col-8">
-                <h6 class="text-muted small">{{ 'Program'|trans }}</h6>
-                <h2 class="text-info font-weight-bold">{{ program }}</h2>
-            </div>
-            <div class="col-2 text-right">
-                <div><a href="{{ path('program_edit', {'id': program.id}) }}" class="btn btn-link"><i class="fas fa-edit"></i></a></div>
-                <div>{{ include('program/_delete_form.html.twig') }}</div>
-            </div>
-        </div>
-        <div>
-            <small class="text-muted ">
-                <span>#{{ program.id }} - </span>
-                <span class="font-italic">{{ 'Created at %date%'|trans({'%date%' : program.createdAt.format('d/m/Y H:i:s') }) }}</span>
-            </small>
-        </div>
+        {% include 'program/_header.html.twig' %}
 
         <div class="my-5">
             {% include 'program/_modal_objective.html.twig' %}

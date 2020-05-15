@@ -16,6 +16,7 @@ class ProgramType extends AbstractType
             ->add('name', TextType::class, [
                 'attr' => ['placeholder' => 'Name of program']
             ])
+            ->add('dayObjective')
         ;
     }
 

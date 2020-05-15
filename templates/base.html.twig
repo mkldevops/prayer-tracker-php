@@ -24,13 +24,18 @@
                 </button>
                 <div class="navbar-collapse collapse" id="navbarCollapse" style="">
                     <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_home') }}">{{ 'Home'|trans }}</a>
+                        </li>
                         {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_home') }}">{{ 'Home'|trans }}</a>
+                                <a class="nav-link" href="{{ path('app_home') }}">{{ 'Profile'|trans }}</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('easyadmin') }}">{{ 'Admin'|trans }}</a>
-                            </li>
+                            {% if is_granted('ROLE_SUPER_ADMIN') %}
+                                <li class="nav-item">
+                                    <a class="nav-link" href="{{ path('easyadmin') }}">{{ 'Admin'|trans }}</a>
+                                </li>
+                            {% endif %}
                         {% endif %}
                     </ul>
                     {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
