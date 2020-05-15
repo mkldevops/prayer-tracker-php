@@ -3,12 +3,32 @@
 'Hello on Prayer Program': 'Bienvenue sur Prayer Program'
 'Connect you': 'Connecte toi'
 or: ou
-'Register you': 'Créer un compte'
+'Register you': 'Créer un nouveau compte'
 Save: Enregistrer
 'Program "%name%"': 'Programme "%name%"'
 'Created at %date%': 'Ajouté le %date%'
-Program: 'Programme'
-Objective: 'Objectif'
-Update: 'Modifier'
+Program: Programme
+Objective: Objectif
+Update: Modifier
 Enable: Actif
-added at %date%: 'Ajoutée le %date%'
+'added at %date%': 'Ajoutée le %date%'
+'Remember me': 'Se souvenir de moi'
+Username: 'Nom d''utilisateur'
+Password: 'Mot de passe'
+'Please sign in': Connection
+Logout: Déconnection
+'Edit Objective "%name%"': 'Modifier l''objectif "%name%"'
+Updat÷e: Modifier
+'Last prayers': 'Dernieres prières'
+Date: Date
+Prayer: Prière
+show: Afficher
+'Create your first program': 'Ajoute ton premier programme'
+'New Program': 'Nouveau programme'
+Home: Accueil
+Admin: Admin
+Register: Inscription
+'Add Objective on program "%program%"': '__Add Objective on program "%program%"'
+Close: Fermer
+Agree terms : Accepter les conditions
+Plain Password: Mot de passe
