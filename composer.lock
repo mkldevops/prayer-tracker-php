@@ -1443,7 +1443,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/fardus/makefile.git",
-                "reference": "e1591e5b0f08eccca89e16cee602add48618f101"
+                "reference": "3bb73193f643e4b503cdb1df75b26231f08404c6"
             },
             "type": "library",
             "license": [
@@ -1464,15 +1464,15 @@
                 "php",
                 "shortcut"
             ],
-            "time": "2020-05-16T13:17:44+00:00"
+            "time": "2020-05-16T14:00:48+00:00"
         },
         {
             "name": "fardus/traits-symfony",
-            "version": "1.1.7",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fardus/traits-symfony.git",
-                "reference": "a5d8d9a415ce837cb4cad73aaa4f6c6c313ca543"
+                "reference": "27cb22262e68a2e4e16a6e87c6ea6f9df1520366"
             },
             "require": {
                 "php": ">=7.1"
@@ -1502,7 +1502,7 @@
                 "tools",
                 "traits"
             ],
-            "time": "2020-05-11T12:14:44+00:00"
+            "time": "2020-05-18T09:52:41+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
