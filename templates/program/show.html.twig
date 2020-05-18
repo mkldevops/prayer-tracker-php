@@ -3,7 +3,7 @@
 {% block title %}{{ 'Program'|trans }}{% endblock %}
 
 {% block body %}
-    <div class="offset-sm-4 col-sm-4 text-center">
+    <div class="offset-sm-2 col-sm-8 text-center">
         {% include 'program/_header.html.twig' %}
 
         <div class="my-5">
@@ -17,16 +17,23 @@
                 {% endfor %}
 
 
-                <div class="stats mt-4">
-                    <h1 id="program-sub">{{ total - accomplished }}</h1>
-                    <div class="h6 row">
-                        <div class="col-5"> <span id="program-count">{{ accomplished }}</span> / {{ total }}</div>
-                        <div class="col-2"></div>
-                        <div class="col-5">
-                            <span id="program-percent">{{ ( accomplished / total * 100)|round(2) }}</span>%
+                <div class="stats card my-4">
+                    <div class="card-title">{{ 'Global overview'|trans }}</div>
+                    <div class="card-body">
+                        <h1 id="program-sub" class="font-weight-bold">{{ total - accomplished }}</h1>
+                        <div class="h6 row">
+                            <div class="col-5"> <span id="program-count">{{ accomplished }}</span> / {{ total }}</div>
+                            <div class="col-2"></div>
+                            <div class="col-5">
+                                <span id="program-percent">{{ ( accomplished / total * 100)|round(2) }}</span>%
+                            </div>
                         </div>
                     </div>
                 </div>
+
+                <figure class="highcharts-figure">
+                    <div id="chart"></div>
+                </figure>
             {% else %}
                 <p class="h5 text-primary font-weight-bold">{{ 'Your Program is added'|trans }}</p>
                 <p>{{ 'program_show_without_objective'|trans }}</p>
@@ -42,11 +49,11 @@
     {{ parent() }}
     <style>
         .btn-circle.btn-md {
-            width: 50px;
-            height: 50px;
+            width: 60px;
+            height: 60px;
             padding: 7px 10px;
-            border-radius: 25px;
-            font-size: 10px;
+            border-radius: 30px;
+            font-size: 1.6rem;
             text-align: center;
         }
     </style>
@@ -55,7 +62,9 @@
 {% block javascripts %}
 
     {{ parent() }}
+    <script src="{{ asset('bower/highcharts/highcharts.js') }}"></script>
     <script src="{{ asset('js/prayer.js') }}"></script>
+    <script src="{{ asset('js/program.js') }}"></script>
     <script type="application/javascript">
         $(function () {
             $('#add-objective').click(function (event) {
@@ -74,6 +83,8 @@
                         console.log(response, ctx)
                     })
             })
+
+
         })
     </script>
 {% endblock %}

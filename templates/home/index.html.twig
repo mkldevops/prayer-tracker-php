@@ -9,9 +9,12 @@
         <p>Il te permettra de gerer des prières a rattraper ou accomplir des prières sounnah via un programme comportant des objectifs à atteindre.</p>
         <div class="offset-sm-3 col-sm-6 mt-4">
             {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <div><a href="{{ path('app_login') }}" class="btn btn-info btn-block btn-lg"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans|upper }}</a></div>
-
-                <div class="mt-4"><a href="{{ path('app_register') }}" class="small btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans|upper }}</a></div>
+                <div>
+                    <a href="{{ path('app_login') }}" class="btn btn-info btn-block btn-lg"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans }}</a>
+                </div>
+                <div class="mt-4">
+                    <a href="{{ path('app_register') }}" class="btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans }}</a>
+                </div>
             {% else %}
                 <h3 class="text-info">{{ 'Hello %user%'|trans({ '%user%' : app.user }) }}</h3>
                 <ul class="my-3 list-group">

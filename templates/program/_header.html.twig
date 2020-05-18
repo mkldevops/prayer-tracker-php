@@ -13,7 +13,7 @@
 </div>
 <div>
     <small class="text-muted ">
-        <span>#{{ program.id }} - </span>
+        <span id="program" data-id="{{ program.id }}">#{{ program.id }} - </span>
         <span class="font-italic">{{ 'Created at %date%'|trans({'%date%' : program.createdAt.format('d/m/Y H:i:s') }) }}</span>
     </small>
 </div>

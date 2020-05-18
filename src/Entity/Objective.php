@@ -12,7 +12,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=ObjectiveRepository::class)
- * @UniqueEntity(fields={"program", "prayerName"})
+ * @UniqueEntity(
+ *     fields={"program", "prayerName"},
+ *     errorPath="port",
+ *     message="This port is already in use on that host."
+ * )
  */
 class Objective
 {

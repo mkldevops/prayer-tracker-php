@@ -92,7 +92,7 @@
             }
 
             let id  = $('#objective').data('id')
-            $.post(Routing.generate('api_prayer_stats', { id : id }))
+            $.post(Routing.generate('api_objective_stats', { id : id }))
                 .done(function (response) {
                     Object.keys(response).map(function(objectKey, index) {
                         let value = response[objectKey];

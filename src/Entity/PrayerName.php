@@ -24,7 +24,7 @@ class PrayerName
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     public function __construct()
     {

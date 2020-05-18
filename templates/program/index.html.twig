@@ -14,6 +14,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Objectives</th>
                 <th></th>
                 <th></th>
             </tr>
@@ -23,6 +24,7 @@
                 <tr>
                     <td>{{ program.id }}</td>
                     <td><a href="{{ path('program_show', {'id': program.id}) }}">{{ program.name }}</a></td>
+                    <td><a href="{{ path('program_show', {'id': program.id}) }}">{{ program.objectives.count }}</a></td>
                     <td>
                         <a href="{{ path('program_show', {'id': program.id}) }}"><i class="fas fa-file-alt"></i></a>
                     </td>

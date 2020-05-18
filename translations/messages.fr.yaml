@@ -3,7 +3,7 @@
 'Hello on Prayer Program': 'Bienvenue sur Prayer Program'
 'Connect you': 'Connecte toi'
 or: ou
-'Register you': 'Créer un nouveau compte'
+'Register you': 'Nouveau compte'
 Save: Enregistrer
 'Program "%name%"': 'Programme "%name%"'
 'Created at %date%': 'Ajouté le %date%'
@@ -52,3 +52,4 @@ Your Program is added: 'Ton programme est maintenant disponible'
 program_show_without_objective: 'Commence maintenant par ajouter un premier objectif'
 Add new objective: 'Ajouter un objectif'
 Are you sure you want to delete this item?: Etes vous sur de vouloir supprimer cette occurence
+w: 'messages'

@@ -2,9 +2,11 @@
 
 namespace App\Controller\Api;
 
+use App\Entity\Objective;
 use App\Entity\PrayerName;
 use App\Entity\Program;
 use App\Manager\ObjectiveManager;
+use App\Manager\PrayerManager;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,6 +36,21 @@ class ObjectiveApiController extends AbstractController
             $this->logger->error(__METHOD__, compact('exception'));
             $response = $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+        return $response;
+    }
+
+    /**
+     * @Route("/stats/{id}", name="api_objective_stats")
+     */
+    public function stats(Objective $objective, PrayerManager $prayerManager)
+    {
+        try {
+            $response = $this->json($prayerManager->stats($objective, 5));
+        } catch (\Exception $exception) {
+            $this->logger->error(__FUNCTION__, compact('exception'));
+            $response = $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+
         return $response;
     }
 }

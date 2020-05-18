@@ -41,7 +41,7 @@ class Program
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private ?int $dayObjective = 1;
+    private ?int $dayObjective = null;
 
     public function __construct()
     {

@@ -2,7 +2,8 @@
     "type": "project",
     "license": "proprietary",
     "repositories": [
-        { "type": "git",  "url": "https://github.com/fardus/traits-symfony.git" }
+        { "type": "git",  "url": "https://github.com/fardus/traits-symfony.git" },
+        { "type": "git",  "url": "https://github.com/fardus/makefile.git" }
     ],
     "require": {
         "php": "^7.4",
@@ -10,6 +11,7 @@
         "ext-iconv": "*",
         "beberlei/doctrineextensions": "^1.2",
         "easycorp/easyadmin-bundle": "^2.3",
+        "fardus/makefile": "dev-develop",
         "fardus/traits-symfony": "^1.1",
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "sensio/framework-extra-bundle": "^5.5",
@@ -25,9 +27,19 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.3",
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "phpstan/phpstan": "^0.12.25",
+        "phpstan/phpstan-deprecation-rules": "^0.12.2",
+        "phpstan/phpstan-doctrine": "^0.12.13",
+        "phpstan/phpstan-phpunit": "^0.12.8",
+        "phpstan/phpstan-symfony": "^0.12.6",
+        "slam/phpstan-extensions": "^5.0",
+        "squizlabs/php_codesniffer": "^3.5",
         "symfony/maker-bundle": "^1.16",
         "symfony/profiler-pack": "^1.0",
-        "symfony/var-dumper": "5.0.*"
+        "symfony/var-dumper": "5.0.*",
+        "thecodingmachine/phpstan-strict-rules": "^0.12.0",
+        "vimeo/psalm": "^3.11"
     },
     "config": {
         "preferred-install": {

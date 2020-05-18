@@ -28,7 +28,7 @@ class PrayerRepository extends ServiceEntityRepository
         parent::__construct($registry, Prayer::class);
     }
 
-    public function statsOfObjective(Objective $objective, DateTime $from)
+    public function statsOfObjective(Objective $objective, DateTime $from): array
     {
         return $this->createQueryBuilder('p')
             ->select('DATE(p.createdAt) as date')
@@ -45,10 +45,10 @@ class PrayerRepository extends ServiceEntityRepository
     /**
      * @throws AppException
      */
-    public function countProgram(Program $program) : int
+    public function countProgram(Program $program): int
     {
         try {
-            return (int)$this->createQueryBuilder('p')
+            return (int) $this->createQueryBuilder('p')
                 ->select('COUNT(p) as count')
                 ->innerJoin('p.objective', 'o')
                 ->where('o.program = :o_program')
@@ -58,5 +58,22 @@ class PrayerRepository extends ServiceEntityRepository
         } catch (NonUniqueResultException | NoResultException $e) {
             throw new AppException($e->getMessage(), 0, $e);
         }
+    }
+
+    public function statsOfProgram(Program $program, DateTime $from): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('DATE(p.createdAt) as date')
+            ->addSelect('pn.name')
+            ->addSelect('count(p) AS nb')
+            ->innerJoin('p.objective', 'o')
+            ->innerJoin('p.prayerName', 'pn')
+            ->where('o.program = :o_program')
+            ->andWhere('p.createdAt >= :p_createdAt')
+            ->setParameter('o_program', $program)
+            ->setParameter('p_createdAt', $from)
+            ->groupBy('date', 'pn.name')
+            ->getQuery()
+            ->getResult();
     }
 }

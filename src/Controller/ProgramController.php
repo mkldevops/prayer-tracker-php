@@ -43,7 +43,9 @@ class ProgramController extends AbstractController
             $entityManager->persist($program);
             $entityManager->flush();
 
-            return $this->redirectToRoute('program_index');
+            $this->addFlash('success', sprintf('Great ! your program %s is added successfully', $program));
+
+            return $this->redirectToRoute('program_show', ['id' => $program->getId()]);
         }
 
         return $this->render('program/new.html.twig', [
@@ -53,21 +55,21 @@ class ProgramController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="program_show", methods={"GET"})
+     * @Route("/{id}", name="program_show", methods={"GET", "POST"})
      */
     public function show(TranslatorInterface $translator, Program $program): Response
     {
         if ($program->getUser() !== $this->getUser()) {
             $this->addFlash('info', $translator->trans('You don\'t have a program with id '.$program->getId()));
-            return $this->redirectToRoute('program_index');
-        }
 
+            return $this->redirectToRoute('app_home');
+        }
 
         $form = $this->createForm(ObjectiveType::class, new Objective());
 
         return $this->render('program/show.html.twig', [
             'program' => $program,
-            'form' => $form->createView()
+            'form' => $form->createView(),
         ]);
     }
 

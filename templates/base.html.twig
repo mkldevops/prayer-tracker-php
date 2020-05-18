@@ -12,13 +12,23 @@
                 .small, small {
                     font-size: 70%;
                 }
+                label {
+                    font-weight: bolder;
+                }
+                .required:after {
+                    content:" *";
+                    color: red;
+                }
+                h1,h2, .btn {
+                    font-variant: small-caps; /* default is `normal` */
+                }
             </style>
         {% endblock %}
     </head>
     <body class="d-flex flex-column h-100" cz-shortcut-listen="true">
-        <header style="margin-bottom: 5rem">
+        <header style="margin-bottom: 4rem">
             <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand font-weight-bold" href="#"><i class="far fa-calendar-check"></i> PRAYER PROGRAM</a>
+                <a class="navbar-brand font-weight-bold" href="{{ path('app_home') }}"><i class="far fa-calendar-check"></i> PRAYER PROGRAM</a>
                 <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -46,6 +56,24 @@
         </header>
 
         <main role="main" class="container">
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ label }} alert-dismissible fade show text-center" role="alert">
+                        {{ message }}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            <div id="alert-js" class="alert alert-dismissible fade d-none text-center" role="alert">
+                <span id="alert-message"></span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             {% block body %}{% endblock %}
         </main>
         <footer class="container text-center my-5 border-top pt-5">&copy; Tech&Call 2020 - Prayer Program</footer>
@@ -55,6 +83,14 @@
             <script src="{{ asset('bower/jquery/dist/jquery.min.js') }}"></script>
             <script src="{{ asset('bower/popper.js/src/popper.js') }}"></script>
             <script src="{{ asset('bower/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+
+            <script type="application/javascript">
+                $(function () {
+                    if ($('.alert').length) {
+                        setTimeout(function(){ $('.alert').alert('close'); }, 3000);
+                    }
+                })
+            </script>
         {% endblock %}
     </body>
 </html>
