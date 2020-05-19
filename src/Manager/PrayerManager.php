@@ -7,7 +7,8 @@ use App\Entity\Prayer;
 use App\Exception\AppException;
 use App\Repository\ObjectiveRepository;
 use App\Repository\PrayerRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use DateTime;
+use Fardus\Traits\Symfony\Manager\EntityManagerTrait;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Fardus\Traits\Symfony\Manager\SerializerTrait;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -16,14 +17,13 @@ class PrayerManager
 {
     use SerializerTrait;
     use LoggerTrait;
+    use EntityManagerTrait;
 
     public PrayerRepository $prayerRepository;
     public ObjectiveRepository $objectiveRepository;
-    public EntityManagerInterface $entityManager;
 
-    public function __construct(EntityManagerInterface $entityManager, PrayerRepository $prayerRepository, ObjectiveRepository $objectiveRepository)
+    public function __construct(PrayerRepository $prayerRepository, ObjectiveRepository $objectiveRepository)
     {
-        $this->entityManager = $entityManager;
         $this->prayerRepository = $prayerRepository;
         $this->objectiveRepository = $objectiveRepository;
     }
@@ -68,7 +68,7 @@ class PrayerManager
 
     public function stats(Objective $objective, int $daysAgo)
     {
-        $from = (new \DateTime())->setTimestamp(strtotime(sprintf('%d days ago', $daysAgo)));
+        $from = (new DateTime())->setTimestamp(strtotime(sprintf('%d days ago', $daysAgo)));
         $current = clone $from;
         $data = [];
         while ($current->getTimestamp() <= time()) {
@@ -78,10 +78,27 @@ class PrayerManager
 
         $result = $this->prayerRepository->statsOfObjective($objective, $from);
         foreach ($result as $item) {
-            $date = (new \DateTime($item['date']))->format('d M');
+            $date = DateTime::createFromFormat('Y-m-d', $item['date'])->format('d M');
             $data[$date] = $item['nb'];
         }
 
         return $data;
+    }
+
+    /**
+     * @throws AppException
+     */
+    public function delete(Prayer $prayer, ?UserInterface $user)
+    {
+        if ($prayer->getUser() !== $user) {
+            throw new AppException('acces denied for delete this item');
+        }
+
+        $this->entityManager->remove($prayer);
+        $this->entityManager->flush();
+
+        return [
+            'delete' => true,
+        ];
     }
 }

@@ -11,9 +11,3 @@
         <div>{{ include('program/_delete_form.html.twig') }}</div>
     </div>
 </div>
-<div>
-    <small class="text-muted ">
-        <span id="program" data-id="{{ program.id }}">#{{ program.id }} - </span>
-        <span class="font-italic">{{ 'Created at %date%'|trans({'%date%' : program.createdAt.format('d/m/Y H:i:s') }) }}</span>
-    </small>
-</div>

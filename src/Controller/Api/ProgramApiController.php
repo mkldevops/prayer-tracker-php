@@ -30,4 +30,18 @@ class ProgramApiController extends AbstractController
 
         return $response;
     }
+
+    /**
+     * @Route("/count-day/{id}", name="api_program_count_day",  methods={"GET"})
+     */
+    public function countDay(Program $program, ProgramManager $programManager)
+    {
+        try {
+            $response = $this->json($programManager->countDay($program));
+        } catch (\Exception $exception) {
+            $response = $this->jsonError($exception);
+        }
+
+        return $response;
+    }
 }

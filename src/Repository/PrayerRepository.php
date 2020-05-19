@@ -76,4 +76,25 @@ class PrayerRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @throws AppException
+     */
+    public function countDay(Program $program, \DateTime $from, \DateTime $until)
+    {
+        try {
+            return (int) $this->createQueryBuilder('p')
+                ->select('COUNT(p) as count')
+                ->innerJoin('p.objective', 'o')
+                ->where('o.program = :o_program')
+                ->andWhere('p.createdAt BETWEEN :from AND :until')
+                ->setParameter('from', $from)
+                ->setParameter('until', $until)
+                ->setParameter('o_program', $program)
+                ->getQuery()
+                ->getSingleScalarResult();
+        } catch (NonUniqueResultException | NoResultException $e) {
+            throw new AppException($e->getMessage(), 0, $e);
+        }
+    }
 }

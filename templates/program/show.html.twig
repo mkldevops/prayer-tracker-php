@@ -6,7 +6,13 @@
     <div class="offset-sm-2 col-sm-8 text-center">
         {% include 'program/_header.html.twig' %}
 
-        <div class="my-5">
+        {% if program.dayObjective %}
+            <div class="text-center h6 my-1 card">
+                <div class="card-body">{{ 'Daily objective :' }} <span id="program-count-day" data-daily-objective="{{ program.dayObjective }}" class="font-weight-bold">--</span>/{{ program.dayObjective }}</div>
+            </div>
+        {% endif %}
+
+        <div class="my-2">
             {% include 'program/_modal_objective.html.twig' %}
             {% if program.objectives.count  %}
                 {% set accomplished, total = 0, 0 %}
@@ -42,6 +48,13 @@
         </div>
 
 
+        <div>
+            <small class="text-muted ">
+                <span id="program" data-id="{{ program.id }}">#{{ program.id }} - </span>
+                <span class="font-italic">{{ 'Created at %date%'|trans({'%date%' : program.createdAt.format('d/m/Y H:i:s') }) }}</span>
+            </small>
+        </div>
+
     </div>
 {% endblock %}
 
@@ -63,8 +76,8 @@
 
     {{ parent() }}
     <script src="{{ asset('bower/highcharts/highcharts.js') }}"></script>
-    <script src="{{ asset('js/prayer.js') }}"></script>
     <script src="{{ asset('js/program.js') }}"></script>
+    <script src="{{ asset('js/prayer.js') }}"></script>
     <script type="application/javascript">
         $(function () {
             $('#add-objective').click(function (event) {

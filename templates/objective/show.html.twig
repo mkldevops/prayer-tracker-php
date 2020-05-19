@@ -36,7 +36,7 @@
                 </div>
             </div>
             <div class="tab-pane fade show" id="pills-last" role="tabpanel" aria-labelledby="pills-last-tab">
-                <table class="table table-sm table-responsive-sm mt-3">
+                <table class="table table-sm mt-3">
                     <thead>
                         <tr>
                             <th>{{ 'Date'|trans }}</th>
@@ -47,9 +47,9 @@
                     <tbody>
                         {% for prayer in lastPrayers %}
                             <tr>
-                                <td>{{ prayer.createdAt.format('d/m/Y H:i:s') }}</td>
+                                <td>{{ prayer.createdAt.format('d/m/Y H:i') }}</td>
                                 <td>{{ prayer.prayerName }}</td>
-                                <td><a href="#" class="text-danger btn-link btn"><i class="fas fa-trash"></i></a></td>
+                                <td><button href="#" class="text-danger btn-link btn delete-prayer" data-id="{{ prayer.id }}"><i class="fas fa-trash"></i></button></td>
                             </tr>
                         {% endfor %}
                     </tbody>
@@ -106,8 +106,6 @@
                 .fail(function () {
 
                 })
-
-
         })
     </script>
 {% endblock %}
