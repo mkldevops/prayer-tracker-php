@@ -1,0 +1,19 @@
+.small, small {
+    font-size: 70%;
+}
+label {
+    font-weight: bolder;
+}
+.required:after {
+    content:" *";
+    color: red;
+}
+h1,h2, .btn {
+    font-variant: small-caps; /* default is `normal` */
+}
+footer {
+    background: #222a35;
+}
+main {
+    min-height: 600px;
+}

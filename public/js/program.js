@@ -46,8 +46,6 @@ $(function () {
                     dataChart.xAxis.categories = Object.keys(value);
                 }
 
-
-                console.log({ name : objectKey, data : Object.values(value) })
                 dataChart.series.push({ name : objectKey, data : Object.values(value) });
             })
             Highcharts.chart('chart', dataChart);
@@ -55,4 +53,21 @@ $(function () {
         .fail(function (response, ctx) {
             console.log(response, ctx)
         })
+
+    countDay()
 })
+
+function countDay()
+{
+    let program = $('#program').data('id')
+    console.log(program)
+    if (program) {
+        $.get(Routing.generate('api_program_count_day', { id : program }))
+            .done(function (response) {
+                $('#program-count-day').html(response.countDay)
+            })
+            .fail(function (response, ctx) {
+                console.log(response, ctx)
+            })
+    }
+}

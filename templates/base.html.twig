@@ -8,54 +8,13 @@
             <link rel="stylesheet" href="{{ asset('bower/fontawesome/css/all.css') }}">
             <link rel="stylesheet" href="{{ asset('bower/bootstrap/dist/css/bootstrap.min.css') }}">
             <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/yeti/bootstrap.min.css">
-            <style>
-                .small, small {
-                    font-size: 70%;
-                }
-                label {
-                    font-weight: bolder;
-                }
-                .required:after {
-                    content:" *";
-                    color: red;
-                }
-                h1,h2, .btn {
-                    font-variant: small-caps; /* default is `normal` */
-                }
-            </style>
+            <link rel="stylesheet" href="{{ asset('css/style.css') }}">
         {% endblock %}
     </head>
     <body class="d-flex flex-column h-100" cz-shortcut-listen="true">
-        <header style="margin-bottom: 4rem">
-            <nav class="navbar navbar-expand-sm navbar-dark fixed-top bg-dark">
-                <a class="navbar-brand font-weight-bold" href="{{ path('app_home') }}"><i class="far fa-calendar-check"></i> PRAYER PROGRAM</a>
-                <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse" id="navbarCollapse" style="">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_home') }}">{{ 'Home'|trans }}</a>
-                        </li>
-                        {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_home') }}">{{ 'Profile'|trans }}</a>
-                            </li>
-                            {% if is_granted('ROLE_SUPER_ADMIN') %}
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ path('easyadmin') }}">{{ 'Admin'|trans }}</a>
-                                </li>
-                            {% endif %}
-                        {% endif %}
-                    </ul>
-                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                        <a href="{{ path('app_logout') }}" class="btn btn-outline-light my-2 my-sm-0" type="submit"><i class="fas fa-sign-out-alt"></i> {{ 'Logout'|trans }}</a>
-                    {% endif %}
-                </div>
-            </nav>
-        </header>
+        {% include 'header.html.twig' %}
 
-        <main role="main" class="container">
+        <main role="main" class="container pb-3">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="alert alert-{{ label }} alert-dismissible fade show text-center" role="alert">
@@ -76,7 +35,10 @@
 
             {% block body %}{% endblock %}
         </main>
-        <footer class="container text-center my-5 border-top pt-5">&copy; Tech&Call 2020 - Prayer Program</footer>
+        <footer class="container-fluid text-center text-white mt-2 pb-5 pt-2">
+            <a href="{{ path('contact') }}">{{ 'Contact us'|trans }}</a>
+            <div>&copy; Tech&Call 2020 - Prayer Program</div>
+        </footer>
         {% block javascripts %}
             <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
             <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
