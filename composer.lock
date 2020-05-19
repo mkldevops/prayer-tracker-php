@@ -1526,11 +1526,11 @@
         },
         {
             "name": "fardus/traits-symfony",
-            "version": "1.2.0",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/fardus/traits-symfony.git",
-                "reference": "27cb22262e68a2e4e16a6e87c6ea6f9df1520366"
+                "reference": "d8f6386e46031520d08b4ad90e52226b1cebcf9a"
             },
             "require": {
                 "php": ">=7.1"
@@ -1560,7 +1560,7 @@
                 "tools",
                 "traits"
             ],
-            "time": "2020-05-18T09:52:41+00:00"
+            "time": "2020-05-19T09:56:48+00:00"
         },
         {
             "name": "friendsofsymfony/jsrouting-bundle",
