@@ -16,14 +16,14 @@
         "friendsofsymfony/jsrouting-bundle": "^2.5",
         "sensio/framework-extra-bundle": "^5.5",
         "stof/doctrine-extensions-bundle": "^1.4",
-        "symfony/console": "5.0.*",
-        "symfony/dotenv": "5.0.*",
+        "symfony/console": "5.1.*",
+        "symfony/dotenv": "5.1.*",
         "symfony/flex": "^1.3.1",
-        "symfony/framework-bundle": "5.0.*",
+        "symfony/framework-bundle": "5.1.*",
         "symfony/orm-pack": "^1.0",
         "symfony/swiftmailer-bundle": "^3.4",
-        "symfony/translation": "5.0.*",
-        "symfony/yaml": "5.0.*",
+        "symfony/translation": "5.1.*",
+        "symfony/yaml": "5.1.*",
         "symfonycasts/reset-password-bundle": "^1.1"
     },
     "require-dev": {
@@ -38,7 +38,7 @@
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/maker-bundle": "^1.16",
         "symfony/profiler-pack": "^1.0",
-        "symfony/var-dumper": "5.0.*",
+        "symfony/var-dumper": "5.1.*",
         "thecodingmachine/phpstan-strict-rules": "^0.12.0",
         "vimeo/psalm": "^3.11"
     },
@@ -85,7 +85,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "5.0.*"
+            "require": "5.1.*"
         }
     }
 }
