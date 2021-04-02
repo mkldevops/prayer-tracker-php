@@ -6,9 +6,10 @@
         { "type": "git",  "url": "https://github.com/fardus/makefile.git" }
     ],
     "require": {
-        "php": "^7.4",
+        "php": ">=7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-pdo_sqlite": "*",
         "beberlei/doctrineextensions": "^1.2",
         "easycorp/easyadmin-bundle": "^2.3",
         "fardus/makefile": "dev-develop",
@@ -87,5 +88,7 @@
             "allow-contrib": false,
             "require": "5.2.*"
         }
-    }
+    },
+    "name": "fardus/prayer-program",
+    "description": "Programmation de prière"
 }
