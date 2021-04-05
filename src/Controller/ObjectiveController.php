@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Objective;
 use App\Form\Objective1Type;
-use App\Repository\ObjectiveRepository;
 use App\Repository\PrayerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +15,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ObjectiveController extends AbstractController
 {
-
     /**
      * @Route("/{id}", name="objective_show", methods={"GET"})
      */

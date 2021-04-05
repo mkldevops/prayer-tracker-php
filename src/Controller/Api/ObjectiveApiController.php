@@ -30,12 +30,13 @@ class ObjectiveApiController extends AbstractController
             $prayerName = $objectiveManager->entityManager->find(PrayerName::class, $request->get('prayerName'));
             $objective = $objectiveManager->new($program, $prayerName, $request->get('number'));
             $response = $this->json($objective, Response::HTTP_OK, [], [
-                ObjectNormalizer::ATTRIBUTES => ['id', 'number']
+                ObjectNormalizer::ATTRIBUTES => ['id', 'number'],
             ]);
         } catch (\Exception $exception) {
             $this->logger->error(__METHOD__, compact('exception'));
             $response = $this->json(['error' => $exception->getMessage()], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
         return $response;
     }
 

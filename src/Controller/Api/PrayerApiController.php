@@ -8,7 +8,6 @@ use App\Manager\PrayerManager;
 use Fardus\Traits\Symfony\Controller\ResponseTrait;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**

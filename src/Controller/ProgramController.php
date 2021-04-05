@@ -57,10 +57,10 @@ class ProgramController extends AbstractController
     /**
      * @Route("/{id}", name="program_show", methods={"GET", "POST"})
      */
-    public function show(TranslatorInterface $translator, Program $program): Response
+    public function show(Request $request, TranslatorInterface $translator, Program $program = null): Response
     {
-        if ($program->getUser() !== $this->getUser()) {
-            $this->addFlash('info', $translator->trans('You don\'t have a program with id '.$program->getId()));
+        if (null === $program || $program->getUser() !== $this->getUser()) {
+            $this->addFlash('info', $translator->trans('You don\'t have a program with id '.$request->get('id')));
 
             return $this->redirectToRoute('app_home');
         }

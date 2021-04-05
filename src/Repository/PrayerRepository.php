@@ -80,7 +80,7 @@ class PrayerRepository extends ServiceEntityRepository
     /**
      * @throws AppException
      */
-    public function countDay(Program $program, \DateTime $from, \DateTime $until)
+    public function countDay(Program $program, DateTime $from, DateTime $until)
     {
         try {
             return (int) $this->createQueryBuilder('p')

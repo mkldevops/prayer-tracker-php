@@ -14,7 +14,7 @@ class ProgramType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'attr' => ['placeholder' => 'Name of program']
+                'attr' => ['placeholder' => 'Name of program'],
             ])
             ->add('dayObjective')
         ;
@@ -24,6 +24,7 @@ class ProgramType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Program::class,
+            'translation_domain' => 'program',
         ]);
     }
 }

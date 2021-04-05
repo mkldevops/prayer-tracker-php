@@ -2,27 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Objective;
+use App\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class Objective1Type extends AbstractType
+class ContactType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('number')
-            ->add('program')
-            ->add('prayerName')
-            ->add('enable')
+            ->add('email')
+            ->add('message')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Objective::class,
+            'data_class' => Contact::class,
+            'translation_domain' => 'contact',
         ]);
     }
 }

@@ -60,7 +60,7 @@ class Objective
 
     public function __toString()
     {
-        return sprintf("%s - %s", (string) $this->program, (string) $this->prayerName);
+        return sprintf('%s - %s', (string) $this->program, (string) $this->prayerName);
     }
 
     public function getId(): ?int
@@ -135,7 +135,7 @@ class Objective
         return $this;
     }
 
-    public function getUser() : User
+    public function getUser(): User
     {
         return $this->program->getUser();
     }

@@ -26,7 +26,7 @@ class ObjectiveRepository extends ServiceEntityRepository
     /**
      * @throws AppException
      */
-    public function sumNumberOfProgram(Program $program) : int
+    public function sumNumberOfProgram(Program $program): int
     {
         try {
             return (int) $this->createQueryBuilder('o')

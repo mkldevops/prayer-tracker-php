@@ -8,7 +8,7 @@ class AdminController extends EasyAdminController
 {
     public function persistEntity($entity)
     {
-        if (method_exists($entity, 'setUser') && $entity->getUser() === null) {
+        if (method_exists($entity, 'setUser') && null === $entity->getUser()) {
             $entity->setUser($this->getUser());
         }
 
