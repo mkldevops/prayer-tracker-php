@@ -6,10 +6,12 @@ RUN mkdir -p -m 777 /opt/apache/sessiontmp5/
 EXPOSE 80
 WORKDIR /var/www/html/
 
-RUN apt update && apt install -y zip curl git cron libzip-dev vim mycli
+RUN apt update && apt install -y zip curl git cron libzip-dev vim mycli libicu-dev
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN docker-php-ext-install -j$(nproc) opcache pdo_mysql zip
+RUN docker-php-ext-configure intl \
+    && docker-php-ext-install intl
 COPY docker/php.ini /usr/local/etc/php/conf.d/app.ini
 COPY docker/entrypoint.sh /opt/entrypoint.sh
 

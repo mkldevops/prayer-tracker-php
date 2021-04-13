@@ -74,9 +74,9 @@
 {% block javascripts %}
 
     {{ parent() }}
-    <script src="{{ asset('bower/highcharts/highcharts.js') }}"></script>
-    <script src="{{ asset('js/program.js') }}"></script>
-    <script src="{{ asset('js/prayer.js') }}"></script>
+    <script src="https://code.highcharts.com/highcharts.js" type="application/javascript"></script>
+    <script src="{{ asset('js/program.js') }}" type="application/javascript"></script>
+    <script src="{{ asset('js/prayer.js') }}" type="application/javascript"></script>
     <script type="application/javascript">
         $(function () {
             $('#add-objective').click(function (event) {

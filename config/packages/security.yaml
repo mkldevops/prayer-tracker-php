@@ -1,8 +1,9 @@
 security:
-    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     encoders:
         App\Entity\User:
             algorithm: auto
+
+    # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
@@ -41,5 +42,5 @@ security:
         - { path: ^/objective, roles: ROLE_USER }
         - { path: ^/program, roles: ROLE_USER }
         - { path: ^/profile, roles: ROLE_USER }
-        - { path: ^/admin, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }
         - { path: ^/api/(post|comment)/\d+$, roles: ROLE_USER }
