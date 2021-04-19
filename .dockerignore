@@ -1,0 +1,5 @@
+docker-compose*
+var/cache
+var/log
+public/bundles
+vendor
