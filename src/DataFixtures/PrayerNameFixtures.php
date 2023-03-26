@@ -8,7 +8,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class PrayerNameFixtures extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         foreach (self::provider() as $item) {
             $prayer = (new PrayerName())->setName($item['name'])->setDescription($item['description']);

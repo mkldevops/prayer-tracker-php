@@ -16,13 +16,8 @@ class ObjectiveManager
     use SerializerTrait;
     use LoggerTrait;
 
-    public ObjectiveRepository $objectiveRepository;
-    public EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager, ObjectiveRepository $objectiveRepository)
+    public function __construct(public EntityManagerInterface $entityManager, public ObjectiveRepository $objectiveRepository)
     {
-        $this->entityManager = $entityManager;
-        $this->objectiveRepository = $objectiveRepository;
     }
 
     /**
@@ -31,7 +26,7 @@ class ObjectiveManager
     public function new(Program $program, PrayerName $prayerName, int $number): Objective
     {
         $exists = $this->objectiveRepository->count(['program' => $program, 'prayerName' => $prayerName]);
-        if ($exists) {
+        if ($exists !== 0) {
             throw new AppException('This prayer exists on your objective');
         }
 

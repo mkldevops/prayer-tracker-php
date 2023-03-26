@@ -11,6 +11,8 @@ use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @extends ServiceEntityRepository<Objective>
+ *
  * @method Objective|null find($id, $lockMode = null, $lockVersion = null)
  * @method Objective|null findOneBy(array $criteria, array $orderBy = null)
  * @method Objective[]    findAll()

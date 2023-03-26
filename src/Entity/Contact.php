@@ -2,37 +2,33 @@
 
 namespace App\Entity;
 
+use DateTime;
+use DateTimeInterface;
 use App\Repository\ContactRepository;
+use App\Trait\IdEntityTrait;
+use App\Trait\EnableEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Fardus\Traits\Symfony\Entity\EmailEntity;
 use Fardus\Traits\Symfony\Entity\EnableEntity;
 use Fardus\Traits\Symfony\Entity\IdEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass=ContactRepository::class)
- */
+#[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
-    use IdEntity;
+    use IdEntityTrait;
     use TimestampableEntity;
-    use EnableEntity;
+    use EnableEntityTrait;
     use EmailEntity;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     */
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: 'text', nullable: true)]
     private string $message;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private ?\DateTime $readAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $readAt = null;
 
     public function __construct()
     {
@@ -63,12 +59,12 @@ class Contact
         return $this;
     }
 
-    public function getReadAt(): ?\DateTimeInterface
+    public function getReadAt(): ?DateTimeInterface
     {
         return $this->readAt;
     }
 
-    public function setReadAt(?\DateTimeInterface $readAt): self
+    public function setReadAt(?DateTimeInterface $readAt): self
     {
         $this->readAt = $readAt;
 

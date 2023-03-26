@@ -1,19 +1,34 @@
 <?php
 
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use Symfony\Bundle\MakerBundle\MakerBundle;
+use SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle;
+use Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle;
+use Symfony\Bundle\WebProfilerBundle\WebProfilerBundle;
+use Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle;
+use Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle;
+use FOS\JsRoutingBundle\FOSJsRoutingBundle;
+use Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle;
+use Symfony\Bundle\SecurityBundle\SecurityBundle;
+use EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle;
+use Symfony\Bundle\MonologBundle\MonologBundle;
 return [
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle::class => ['all' => true],
-    Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
-    Symfony\Bundle\MakerBundle\MakerBundle::class => ['dev' => true],
-    SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle::class => ['all' => true],
-    Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
-    Symfony\Bundle\WebProfilerBundle\WebProfilerBundle::class => ['dev' => true, 'test' => true],
-    Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
-    Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
-    FOS\JsRoutingBundle\FOSJsRoutingBundle::class => ['all' => true],
-    Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle::class => ['all' => true],
-    Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
-    EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle::class => ['all' => true],
-    Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    FrameworkBundle::class => ['all' => true],
+    DoctrineBundle::class => ['all' => true],
+    DoctrineMigrationsBundle::class => ['all' => true],
+    TwigBundle::class => ['all' => true],
+    MakerBundle::class => ['dev' => true],
+    SymfonyCastsResetPasswordBundle::class => ['all' => true],
+    StofDoctrineExtensionsBundle::class => ['all' => true],
+    WebProfilerBundle::class => ['dev' => true, 'test' => true],
+    SensioFrameworkExtraBundle::class => ['all' => true],
+    DoctrineFixturesBundle::class => ['dev' => true, 'test' => true],
+    FOSJsRoutingBundle::class => ['all' => true],
+    SwiftmailerBundle::class => ['all' => true],
+    SecurityBundle::class => ['all' => true],
+    EasyAdminBundle::class => ['all' => true],
+    MonologBundle::class => ['all' => true],
 ];

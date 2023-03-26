@@ -14,6 +14,8 @@ use Doctrine\Persistence\ManagerRegistry;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 
 /**
+ * @extends ServiceEntityRepository<Prayer>
+ *
  * @method Prayer|null find($id, $lockMode = null, $lockVersion = null)
  * @method Prayer|null findOneBy(array $criteria, array $orderBy = null)
  * @method Prayer[]    findAll()

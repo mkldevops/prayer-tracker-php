@@ -2,54 +2,37 @@
 
 namespace App\Entity;
 
+use Stringable;
 use App\Repository\ObjectiveRepository;
+use App\Trait\IdEntityTrait;
+use App\Trait\EnableEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Fardus\Traits\Symfony\Entity\EnableEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass=ObjectiveRepository::class)
- * @UniqueEntity(
- *     fields={"program", "prayerName"},
- *     errorPath="port",
- *     message="This port is already in use on that host."
- * )
- */
-class Objective
+#[ORM\Entity(repositoryClass: ObjectiveRepository::class)]
+#[ORM\UniqueConstraint(fields: ['program', 'prayerName'])]
+#[UniqueEntity(fields: ['program', 'prayerName'], errorPath: 'port', message: 'This port is already in use on that host.')]
+class Objective implements Stringable
 {
-    use EnableEntity;
+    use IdEntityTrait;
+    use EnableEntityTrait;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=Program::class, inversedBy="objectives")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'objectives')]
     private ?Program $program = null;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     private ?int $number = 1;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=PrayerName::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: PrayerName::class)]
     private ?PrayerName $prayerName = null;
 
-    /**
-     * @ORM\OneToMany(targetEntity=Prayer::class, mappedBy="objective")
-     */
+    #[ORM\OneToMany(targetEntity: Prayer::class, mappedBy: 'objective')]
     private ?Collection $prayers;
 
     public function __construct()
@@ -58,14 +41,9 @@ class Objective
         $this->prayers = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return sprintf('%s - %s', (string) $this->program, (string) $this->prayerName);
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 
     public function getProgram(): ?Program

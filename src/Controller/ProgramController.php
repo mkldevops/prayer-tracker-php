@@ -13,14 +13,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-/**
- * @Route("/program")
- */
+#[Route(path: '/program')]
 class ProgramController extends AbstractController
 {
-    /**
-     * @Route("/", name="program_index", methods={"GET"})
-     */
+    #[Route(path: '/', name: 'program_index', methods: ['GET'])]
     public function index(ProgramRepository $programRepository): Response
     {
         return $this->render('program/index.html.twig', [
@@ -28,9 +24,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="program_new", methods={"GET","POST"})
-     */
+    #[Route(path: '/new', name: 'program_new', methods: ['GET', 'POST'])]
     public function new(Request $request): Response
     {
         $program = new Program();
@@ -54,9 +48,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="program_show", methods={"GET", "POST"})
-     */
+    #[Route(path: '/{id}', name: 'program_show', methods: ['GET', 'POST'])]
     public function show(Request $request, TranslatorInterface $translator, Program $program = null): Response
     {
         if (null === $program || $program->getUser() !== $this->getUser()) {
@@ -73,9 +65,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="program_edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'program_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Program $program): Response
     {
         $form = $this->createForm(ProgramType::class, $program);
@@ -93,9 +83,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="program_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{id}', name: 'program_delete', methods: ['DELETE'])]
     public function delete(Request $request, Program $program): Response
     {
         if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {

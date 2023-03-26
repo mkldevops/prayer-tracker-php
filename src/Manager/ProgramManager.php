@@ -17,11 +17,8 @@ class ProgramManager
     use LoggerTrait;
     use EntityManagerTrait;
 
-    public PrayerRepository $prayerRepository;
-
-    public function __construct(PrayerRepository $prayerRepository)
+    public function __construct(public PrayerRepository $prayerRepository)
     {
-        $this->prayerRepository = $prayerRepository;
     }
 
     public function stats(Program $program, int $daysAgo): array
@@ -48,11 +45,12 @@ class ProgramManager
 
     /**
      * @throws AppException
+     * @return array{countDay: mixed}
      */
-    public function countDay(Program $program)
+    public function countDay(Program $program): array
     {
         $countDay = $this->prayerRepository->countDay($program, new DateTime('today'), new DateTime('tomorrow'));
 
-        return compact('countDay');
+        return ['countDay' => $countDay];
     }
 }

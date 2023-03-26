@@ -24,19 +24,10 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    final public const LOGIN_ROUTE = 'app_login';
 
-    private $entityManager;
-    private $urlGenerator;
-    private $csrfTokenManager;
-    private $passwordEncoder;
-
-    public function __construct(EntityManagerInterface $entityManager, UrlGeneratorInterface $urlGenerator, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly UrlGeneratorInterface $urlGenerator, private readonly CsrfTokenManagerInterface $csrfTokenManager, private readonly UserPasswordEncoderInterface $passwordEncoder)
     {
-        $this->entityManager = $entityManager;
-        $this->urlGenerator = $urlGenerator;
-        $this->csrfTokenManager = $csrfTokenManager;
-        $this->passwordEncoder = $passwordEncoder;
     }
 
     public function supports(Request $request)
@@ -45,6 +36,9 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
             && $request->isMethod('POST');
     }
 
+    /**
+     * @return array{username: bool|float|int|string|null, password: bool|float|int|string|null, csrf_token: bool|float|int|string|null}
+     */
     public function getCredentials(Request $request)
     {
         $credentials = [
@@ -69,7 +63,7 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
-        if (!$user) {
+        if (!$user instanceof User) {
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('Username could not be found.');
         }

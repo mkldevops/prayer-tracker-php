@@ -10,24 +10,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/objective")
- */
+#[Route(path: '/objective')]
 class ObjectiveController extends AbstractController
 {
-    /**
-     * @Route("/{id}", name="objective_show", methods={"GET"})
-     */
+    #[Route(path: '/{id}', name: 'objective_show', methods: ['GET'])]
     public function show(Objective $objective, PrayerRepository $prayerRepository): Response
     {
         $lastPrayers = $prayerRepository->findBy(['objective' => $objective], ['createdAt' => 'desc'], 10);
 
-        return $this->render('objective/show.html.twig', compact('lastPrayers', 'objective'));
+        return $this->render('objective/show.html.twig', ['lastPrayers' => $lastPrayers, 'objective' => $objective]);
     }
 
-    /**
-     * @Route("/{id}/edit", name="objective_edit", methods={"GET","POST"})
-     */
+    #[Route(path: '/{id}/edit', name: 'objective_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Objective $objective): Response
     {
         $form = $this->createForm(Objective1Type::class, $objective);
@@ -45,9 +39,7 @@ class ObjectiveController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/{id}", name="objective_delete", methods={"DELETE"})
-     */
+    #[Route(path: '/{id}', name: 'objective_delete', methods: ['DELETE'])]
     public function delete(Request $request, Objective $objective): Response
     {
         if ($this->isCsrfTokenValid('delete'.$objective->getId(), $request->request->get('_token'))) {

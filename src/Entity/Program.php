@@ -2,45 +2,33 @@
 
 namespace App\Entity;
 
+use Stringable;
 use App\Repository\ProgramRepository;
+use App\Trait\IdEntityTrait;
+use App\Trait\EnableEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Fardus\Traits\Symfony\Entity\EnableEntity;
-use Fardus\Traits\Symfony\Entity\NameEntity;
+use Fardus\Traits\Symfony\Entity\NameEntityTrait;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=ProgramRepository::class)
- */
-class Program
+#[ORM\Entity(repositoryClass: ProgramRepository::class)]
+class Program implements Stringable
 {
-    use NameEntity;
-    use EnableEntity;
+    use IdEntityTrait;
+    use NameEntityTrait;
+    use EnableEntityTrait;
     use TimestampableEntity;
 
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
-
-    /**
-     * @ORM\OneToMany(targetEntity=Objective::class, mappedBy="program", orphanRemoval=true)
-     */
+    #[ORM\OneToMany(targetEntity: Objective::class, mappedBy: 'program', orphanRemoval: true)]
     private ?Collection $objectives;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="programs")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'programs')]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+    #[ORM\Column(type: 'integer', nullable: true)]
     private ?int $dayObjective = null;
 
     public function __construct()
@@ -49,7 +37,7 @@ class Program
         $this->objectives = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         return (string) $this->name;
     }

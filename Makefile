@@ -4,7 +4,7 @@
 SHELL			= bash
 EXEC_PHP	  	= php
 GIT			 	= git
-SYMFONY_BIN		= ./symfony
+SYMFONY_BIN		= symfony
 SYMFONY		 	= $(SYMFONY_BIN) console
 COMPOSER	  	= $(SYMFONY_BIN) composer
 DOCKER-COMPOSE	= @docker-compose
@@ -26,7 +26,7 @@ update: bin-install composer.json ## Update vendors according to the composer.js
 	$(COMPOSER) update
 
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
-symfony: bin-install
+symfony: /usr/bin/symfony
 
 sf: symfony ## List all Symfony commands
 	$(SYMFONY)
@@ -83,11 +83,6 @@ load-database: symfony ## Build the db, control the schema validity, load fixtur
 	$(SYMFONY) doctrine:schema:validate
 
 ## —— Symfony binary 💻 ————————————————————————————————————————————————————————
-bin-install: ## Download and install the binary in the project (file is ignored)
-	@test -f ./symfony || ( curl -sS https://get.symfony.com/cli/installer | bash &&	mv ~/.symfony/bin/symfony . )
-
-cert-install: symfony ## Install the local HTTPS certificates
-	$(SYMFONY_BIN) server:ca:install
 
 serve: symfony ## Serve the application with HTTPS support
 	$(SYMFONY_BIN) serve --port=$(PROJECT_PORT_APP)
@@ -112,7 +107,7 @@ codesniffer: ## Run php_codesniffer only
 	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs.xml -n -p src/
 
 stan: ## Run PHPStan only
-	./vendor/bin/phpstan analyse -l max --memory-limit 1G -c phpstan.neon src/
+	./vendor/bin/phpstan analyse
 
 psalm: ## Run psalm only
 	./vendor/bin/psalm --show-info=false

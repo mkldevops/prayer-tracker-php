@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use Iterator;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Entity\PrayerName;
@@ -32,7 +33,7 @@ class DashboardController extends AbstractDashboardController
         return Crud::new()->setDateFormat('dd/MM/yyyy')->setDateTimeFormat('dd/MM/yyyy h:mm A zzzz');
     }
 
-    public function configureMenuItems(): iterable
+    public function configureMenuItems(): Iterator
     {
         yield MenuItem::linktoRoute('Homepage', 'fas fa-home', 'app_home');
         yield MenuItem::linkToCrud('Prayer', 'fas fa-folder-open', Prayer::class);

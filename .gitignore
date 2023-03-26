@@ -11,6 +11,7 @@
 
 /symfony
 /.idea
+/.vscode
 
 ###> squizlabs/php_codesniffer ###
 /.phpcs-cache

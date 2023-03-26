@@ -2,29 +2,23 @@
 
 namespace App\Entity;
 
+use Stringable;
 use App\Repository\PrayerNameRepository;
+use App\Trait\EnableEntityTrait;
+use App\Trait\IdEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Fardus\Traits\Symfony\Entity\DescriptionEntity;
-use Fardus\Traits\Symfony\Entity\EnableEntity;
 use Fardus\Traits\Symfony\Entity\NameEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
-/**
- * @ORM\Entity(repositoryClass=PrayerNameRepository::class)
- */
-class PrayerName
+#[ORM\Entity(repositoryClass: PrayerNameRepository::class)]
+class PrayerName implements Stringable
 {
+    use IdEntityTrait;
     use NameEntity;
     use DescriptionEntity;
-    use EnableEntity;
+    use EnableEntityTrait;
     use TimestampableEntity;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
 
     public function __construct()
     {
@@ -34,10 +28,5 @@ class PrayerName
     public function __toString(): string
     {
         return (string) $this->name;
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
     }
 }

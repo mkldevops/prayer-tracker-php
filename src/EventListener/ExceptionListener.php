@@ -2,6 +2,7 @@
 
 namespace App\EventListener;
 
+use Throwable;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,18 +11,18 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 
 class ExceptionListener
 {
-    public function __construct(private LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function onKernelException(ExceptionEvent $event): void
     {
         $path = preg_replace('#^(/api/[\w-]+).*#', '$1', $event->getRequest()->getPathInfo());
         $exception = $event->getThrowable();
-        $this->logger->debug(__METHOD__, compact('path'));
+        $this->logger->debug(__METHOD__, ['path' => $path]);
         match ($path) { '/api/objective', '/api/prayer', 'program' => false, default => throw $exception };
 
         $message = sprintf('My Error says: %s with code: %s', $exception->getMessage(), $exception->getCode());

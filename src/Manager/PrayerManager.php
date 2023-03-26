@@ -2,6 +2,7 @@
 
 namespace App\Manager;
 
+use DateInterval;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Exception\AppException;
@@ -19,19 +20,15 @@ class PrayerManager
     use LoggerTrait;
     use EntityManagerTrait;
 
-    public PrayerRepository $prayerRepository;
-    public ObjectiveRepository $objectiveRepository;
-
-    public function __construct(PrayerRepository $prayerRepository, ObjectiveRepository $objectiveRepository)
+    public function __construct(public PrayerRepository $prayerRepository, public ObjectiveRepository $objectiveRepository)
     {
-        $this->prayerRepository = $prayerRepository;
-        $this->objectiveRepository = $objectiveRepository;
     }
 
     /**
      * @throws AppException
+     * @return array{objective: array{count: int, number: int|null, percent: float, sub: int, objective: int|null}, program: array{count: int, number: int}}
      */
-    public function add(Objective $objective, UserInterface $user)
+    public function add(Objective $objective, UserInterface $user): array
     {
         if ($objective->getPrayers()->count() >= $objective->getNumber()) {
             throw new AppException('the goal is achieved');
@@ -40,7 +37,7 @@ class PrayerManager
         $prayer = new Prayer();
         $prayer->setUser($user)
             ->setObjective($objective)
-            ->setAccomplishedAt(new \DateTime())
+            ->setAccomplishedAt(new DateTime())
             ->setPrayerName($objective->getPrayerName());
 
         $this->entityManager->persist($prayer);
@@ -66,14 +63,17 @@ class PrayerManager
         ];
     }
 
-    public function stats(Objective $objective, int $daysAgo)
+    /**
+     * @return array<string, mixed>
+     */
+    public function stats(Objective $objective, int $daysAgo): array
     {
         $from = (new DateTime())->setTimestamp(strtotime(sprintf('%d days ago', $daysAgo)));
         $current = clone $from;
         $data = [];
         while ($current->getTimestamp() <= time()) {
             $data[$current->format('d M')] = 0;
-            $current->add(new \DateInterval('P1D'));
+            $current->add(new DateInterval('P1D'));
         }
 
         $result = $this->prayerRepository->statsOfObjective($objective, $from);
@@ -87,8 +87,9 @@ class PrayerManager
 
     /**
      * @throws AppException
+     * @return array{delete: true}
      */
-    public function delete(Prayer $prayer, ?UserInterface $user)
+    public function delete(Prayer $prayer, ?UserInterface $user): array
     {
         if ($prayer->getUser() !== $user) {
             throw new AppException('acces denied for delete this item');

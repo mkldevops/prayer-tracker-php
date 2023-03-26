@@ -2,50 +2,38 @@
 
 namespace App\Entity;
 
+use Stringable;
+use DateTime;
+use DateTimeInterface;
 use App\Repository\PrayerRepository;
+use App\Trait\IdEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-/**
- * @ORM\Entity(repositoryClass=PrayerRepository::class)
- */
-class Prayer
+#[ORM\Entity(repositoryClass: PrayerRepository::class)]
+class Prayer implements Stringable
 {
+    use IdEntityTrait;
     use TimestampableEntity;
-
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
-    private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity=PrayerName::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: PrayerName::class)]
     private ?PrayerName $prayerName = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Objective::class, inversedBy="prayers")
-     */
+    #[ORM\ManyToOne(targetEntity: Objective::class, inversedBy: 'prayers')]
     private ?Objective $objective = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=User::class)
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private ?\DateTime $accomplishedAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?DateTime $accomplishedAt = null;
 
-    public function getId(): ?int
+    public function __toString(): string
     {
-        return $this->id;
+        return sprintf('%s - %s',$this->prayerName, $this->user);
     }
 
     public function getPrayerName(): ?PrayerName
@@ -84,12 +72,12 @@ class Prayer
         return $this;
     }
 
-    public function getAccomplishedAt(): ?\DateTimeInterface
+    public function getAccomplishedAt(): ?DateTimeInterface
     {
         return $this->accomplishedAt;
     }
 
-    public function setAccomplishedAt(?\DateTimeInterface $accomplishedAt): self
+    public function setAccomplishedAt(?DateTimeInterface $accomplishedAt): self
     {
         $this->accomplishedAt = $accomplishedAt;
 
