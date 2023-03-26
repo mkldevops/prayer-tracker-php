@@ -26,5 +26,4 @@ trait IdEntityTrait
 
         return $this;
     }
-
 }

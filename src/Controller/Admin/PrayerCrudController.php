@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Prayer;
@@ -21,7 +23,8 @@ class PrayerCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Prayer')
             ->setEntityLabelInPlural('Prayer')
-            ->setSearchFields(['id']);
+            ->setSearchFields(['id'])
+        ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -36,11 +39,14 @@ class PrayerCrudController extends AbstractCrudController
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $accomplishedAt, $createdAt, $prayerName, $objective, $user];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
+        }
+        if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
-        } elseif (Crud::PAGE_NEW === $pageName) {
+        }
+        if (Crud::PAGE_NEW === $pageName) {
             return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
+        }
+        if (Crud::PAGE_EDIT === $pageName) {
             return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
         }
     }

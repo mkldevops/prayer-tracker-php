@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
+use DateTime;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Entity\Program;
 use App\Exception\AppException;
-use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -16,8 +18,8 @@ use Fardus\Traits\Symfony\Manager\LoggerTrait;
 /**
  * @extends ServiceEntityRepository<Prayer>
  *
- * @method Prayer|null find($id, $lockMode = null, $lockVersion = null)
- * @method Prayer|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Prayer find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Prayer findOneBy(array $criteria, array $orderBy = null)
  * @method Prayer[]    findAll()
  * @method Prayer[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -41,7 +43,8 @@ class PrayerRepository extends ServiceEntityRepository
             ->setParameter('p_createdAt', $from)
             ->groupBy('date')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
@@ -56,8 +59,9 @@ class PrayerRepository extends ServiceEntityRepository
                 ->where('o.program = :o_program')
                 ->setParameter('o_program', $program)
                 ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NonUniqueResultException | NoResultException $e) {
+                ->getSingleScalarResult()
+            ;
+        } catch (NonUniqueResultException|NoResultException $e) {
             throw new AppException($e->getMessage(), 0, $e);
         }
     }
@@ -76,7 +80,8 @@ class PrayerRepository extends ServiceEntityRepository
             ->setParameter('p_createdAt', $from)
             ->groupBy('date', 'pn.name')
             ->getQuery()
-            ->getResult();
+            ->getResult()
+        ;
     }
 
     /**
@@ -94,8 +99,9 @@ class PrayerRepository extends ServiceEntityRepository
                 ->setParameter('until', $until)
                 ->setParameter('o_program', $program)
                 ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NonUniqueResultException | NoResultException $e) {
+                ->getSingleScalarResult()
+            ;
+        } catch (NonUniqueResultException|NoResultException $e) {
             throw new AppException($e->getMessage(), 0, $e);
         }
     }

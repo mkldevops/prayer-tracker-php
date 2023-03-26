@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Stringable;
@@ -17,8 +19,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class User implements UserInterface, Stringable
 {
-    use IdEntityTrait;
     use EnableEntityTrait;
+    use IdEntityTrait;
     use TimestampableEntity;
 
     #[ORM\Column(type: 'string', length: 180, unique: true)]

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Program;
@@ -23,7 +25,8 @@ class ProgramCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Program')
             ->setEntityLabelInPlural('Program')
-            ->setSearchFields(['id', 'dayObjective', 'name']);
+            ->setSearchFields(['id', 'dayObjective', 'name'])
+        ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -39,11 +42,14 @@ class ProgramCrudController extends AbstractCrudController
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $dayObjective, $name, $enable, $createdAt, $objectives, $user];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
+        }
+        if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
-        } elseif (Crud::PAGE_NEW === $pageName) {
+        }
+        if (Crud::PAGE_NEW === $pageName) {
             return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
+        }
+        if (Crud::PAGE_EDIT === $pageName) {
             return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
         }
     }

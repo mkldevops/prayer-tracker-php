@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\PrayerName;
@@ -9,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<PrayerName>
  *
- * @method PrayerName|null find($id, $lockMode = null, $lockVersion = null)
- * @method PrayerName|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|PrayerName find($id, $lockMode = null, $lockVersion = null)
+ * @method null|PrayerName findOneBy(array $criteria, array $orderBy = null)
  * @method PrayerName[]    findAll()
  * @method PrayerName[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */

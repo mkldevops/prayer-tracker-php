@@ -1,25 +1,25 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use DateTime;
 use DateTimeInterface;
 use App\Repository\ContactRepository;
-use App\Trait\IdEntityTrait;
 use App\Trait\EnableEntityTrait;
+use App\Trait\IdEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Fardus\Traits\Symfony\Entity\EmailEntity;
-use Fardus\Traits\Symfony\Entity\EnableEntity;
-use Fardus\Traits\Symfony\Entity\IdEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 class Contact
 {
+    use EmailEntity;
+    use EnableEntityTrait;
     use IdEntityTrait;
     use TimestampableEntity;
-    use EnableEntityTrait;
-    use EmailEntity;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;

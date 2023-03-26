@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Api;
 
 use App\Entity\Objective;
@@ -29,6 +31,7 @@ class ObjectiveApiController extends AbstractController
     {
         $prayerName = $objectiveManager->entityManager->find(PrayerName::class, $request->get('prayerName'));
         $objective = $objectiveManager->new($program, $prayerName, (int) $request->get('number'));
+
         return $this->json($objective, Response::HTTP_OK, [], [
             ObjectNormalizer::ATTRIBUTES => ['id', 'number'],
         ]);

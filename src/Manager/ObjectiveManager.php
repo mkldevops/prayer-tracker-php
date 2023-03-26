@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Manager;
 
 use App\Entity\Objective;
@@ -13,8 +15,8 @@ use Fardus\Traits\Symfony\Manager\SerializerTrait;
 
 class ObjectiveManager
 {
-    use SerializerTrait;
     use LoggerTrait;
+    use SerializerTrait;
 
     public function __construct(public EntityManagerInterface $entityManager, public ObjectiveRepository $objectiveRepository)
     {
@@ -26,7 +28,7 @@ class ObjectiveManager
     public function new(Program $program, PrayerName $prayerName, int $number): Objective
     {
         $exists = $this->objectiveRepository->count(['program' => $program, 'prayerName' => $prayerName]);
-        if ($exists !== 0) {
+        if (0 !== $exists) {
             throw new AppException('This prayer exists on your objective');
         }
 

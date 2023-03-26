@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -37,7 +39,7 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
     }
 
     /**
-     * @return array{username: bool|float|int|string|null, password: bool|float|int|string|null, csrf_token: bool|float|int|string|null}
+     * @return array{username: null|bool|float|int|string, password: null|bool|float|int|string, csrf_token: null|bool|float|int|string}
      */
     public function getCredentials(Request $request)
     {
@@ -78,6 +80,8 @@ class AppAuthenticator extends AbstractFormLoginAuthenticator implements Passwor
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * @param mixed $credentials
      */
     public function getPassword($credentials): ?string
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Stringable;
@@ -16,7 +18,7 @@ class Prayer implements Stringable
 {
     use IdEntityTrait;
     use TimestampableEntity;
-    
+
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: PrayerName::class)]
     private ?PrayerName $prayerName = null;
@@ -33,7 +35,7 @@ class Prayer implements Stringable
 
     public function __toString(): string
     {
-        return sprintf('%s - %s',$this->prayerName, $this->user);
+        return sprintf('%s - %s', $this->prayerName, $this->user);
     }
 
     public function getPrayerName(): ?PrayerName

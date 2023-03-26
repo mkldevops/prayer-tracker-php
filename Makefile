@@ -109,15 +109,8 @@ codesniffer: ## Run php_codesniffer only
 stan: ## Run PHPStan only
 	./vendor/bin/phpstan analyse
 
-psalm: ## Run psalm only
-	./vendor/bin/psalm --show-info=false
-
-init-psalm: ## Init a new psalm config file for a given level, it must be decremented to have stricter rules
-	[ -f ./psalm.xml ] && rm ./psalm.xml || echo 'no ./psalm.xml'
-	./vendor/bin/psalm --init src/ 3
-
 cs-fix: ## Run php-cs-fixer and fix the code.
-	./vendor/bin/php-cs-fixer fix src/
+	./vendor/bin/php-cs-fixer fix --allow-risky=yes
 
 sonar: sonar-project.properties ## sonar scan src directory
 	sonar-scanner -Dsonar.projectVersion=$(VERSION)

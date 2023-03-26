@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Stringable;
 use App\Repository\ProgramRepository;
-use App\Trait\IdEntityTrait;
 use App\Trait\EnableEntityTrait;
+use App\Trait\IdEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -16,9 +18,9 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
 class Program implements Stringable
 {
+    use EnableEntityTrait;
     use IdEntityTrait;
     use NameEntityTrait;
-    use EnableEntityTrait;
     use TimestampableEntity;
 
     #[ORM\OneToMany(targetEntity: Objective::class, mappedBy: 'program', orphanRemoval: true)]

@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Manager;
 
+use DateTime;
+use DateInterval;
 use App\Entity\Program;
 use App\Exception\AppException;
 use App\Repository\PrayerRepository;
-use DateInterval;
-use DateTime;
 use Fardus\Traits\Symfony\Manager\EntityManagerTrait;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Fardus\Traits\Symfony\Manager\SerializerTrait;
 
 class ProgramManager
 {
-    use SerializerTrait;
-    use LoggerTrait;
     use EntityManagerTrait;
+    use LoggerTrait;
+    use SerializerTrait;
 
     public function __construct(public PrayerRepository $prayerRepository)
     {
@@ -36,7 +38,7 @@ class ProgramManager
         $result = $this->prayerRepository->statsOfProgram($program, $from);
 
         foreach ($result as $item) {
-            $date = (DateTime::createFromFormat('Y-m-d', $item['date']))->format('d M');
+            $date = DateTime::createFromFormat('Y-m-d', $item['date'])->format('d M');
             $data[$item['name']][$date] = (int) $item['nb'];
         }
 
@@ -44,8 +46,9 @@ class ProgramManager
     }
 
     /**
-     * @throws AppException
      * @return array{countDay: mixed}
+     *
+     * @throws AppException
      */
     public function countDay(Program $program): array
     {

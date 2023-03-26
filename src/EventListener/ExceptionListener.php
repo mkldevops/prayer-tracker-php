@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\EventListener;
 
 use Throwable;
@@ -20,10 +22,12 @@ class ExceptionListener
      */
     public function onKernelException(ExceptionEvent $event): void
     {
-        $path = preg_replace('#^(/api/[\w-]+).*#', '$1', $event->getRequest()->getPathInfo());
+        $path = preg_replace('#^(/api/[\w-]+).*#', '$1', (string) $event->getRequest()->getPathInfo());
         $exception = $event->getThrowable();
         $this->logger->debug(__METHOD__, ['path' => $path]);
-        match ($path) { '/api/objective', '/api/prayer', 'program' => false, default => throw $exception };
+        match ($path) {
+            '/api/objective', '/api/prayer', 'program' => false, default => throw $exception
+        };
 
         $message = sprintf('My Error says: %s with code: %s', $exception->getMessage(), $exception->getCode());
 

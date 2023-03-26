@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use Iterator;
@@ -36,10 +38,15 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): Iterator
     {
         yield MenuItem::linktoRoute('Homepage', 'fas fa-home', 'app_home');
+
         yield MenuItem::linkToCrud('Prayer', 'fas fa-folder-open', Prayer::class);
+
         yield MenuItem::linkToCrud('Program', 'fas fa-folder-open', Program::class);
+
         yield MenuItem::linkToCrud('Objective', 'fas fa-folder-open', Objective::class);
+
         yield MenuItem::linkToCrud('PrayerName', 'fas fa-folder-open', PrayerName::class);
+
         yield MenuItem::linkToCrud('User', 'fas fa-user', User::class);
     }
 }

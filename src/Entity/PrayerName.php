@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Stringable;
@@ -14,10 +16,10 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 #[ORM\Entity(repositoryClass: PrayerNameRepository::class)]
 class PrayerName implements Stringable
 {
-    use IdEntityTrait;
-    use NameEntity;
     use DescriptionEntity;
     use EnableEntityTrait;
+    use IdEntityTrait;
+    use NameEntity;
     use TimestampableEntity;
 
     public function __construct()

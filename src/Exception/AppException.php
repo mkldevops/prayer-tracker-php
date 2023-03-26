@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Exception;
 
 use Exception;
-use Symfony\Component\HttpFoundation\Response;
 use Throwable;
+use Symfony\Component\HttpFoundation\Response;
 
 class AppException extends Exception
 {

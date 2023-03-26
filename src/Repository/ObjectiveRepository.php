@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Objective;
@@ -13,8 +15,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Objective>
  *
- * @method Objective|null find($id, $lockMode = null, $lockVersion = null)
- * @method Objective|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Objective find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Objective findOneBy(array $criteria, array $orderBy = null)
  * @method Objective[]    findAll()
  * @method Objective[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
@@ -36,8 +38,9 @@ class ObjectiveRepository extends ServiceEntityRepository
                 ->where('o.program = :o_program')
                 ->setParameter('o_program', $program)
                 ->getQuery()
-                ->getSingleScalarResult();
-        } catch (NonUniqueResultException | NoResultException $e) {
+                ->getSingleScalarResult()
+            ;
+        } catch (NonUniqueResultException|NoResultException $e) {
             throw new AppException($e->getMessage(), 0, $e);
         }
     }

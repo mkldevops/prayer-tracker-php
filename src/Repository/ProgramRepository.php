@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Program;
@@ -9,8 +11,8 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Program>
  *
- * @method Program|null find($id, $lockMode = null, $lockVersion = null)
- * @method Program|null findOneBy(array $criteria, array $orderBy = null)
+ * @method null|Program find($id, $lockMode = null, $lockVersion = null)
+ * @method null|Program findOneBy(array $criteria, array $orderBy = null)
  * @method Program[]    findAll()
  * @method Program[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */

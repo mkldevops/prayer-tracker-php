@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Objective;
@@ -23,7 +25,8 @@ class ObjectiveCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Objective')
             ->setEntityLabelInPlural('Objective')
-            ->setSearchFields(['id', 'number']);
+            ->setSearchFields(['id', 'number'])
+        ;
     }
 
     public function configureFields(string $pageName): iterable
@@ -40,11 +43,14 @@ class ObjectiveCrudController extends AbstractCrudController
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $user, $program, $prayerName, $number, $enable, $createdAt];
-        } elseif (Crud::PAGE_DETAIL === $pageName) {
+        }
+        if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $number, $enable, $createdAt, $updatedAt, $program, $prayerName, $prayers];
-        } elseif (Crud::PAGE_NEW === $pageName) {
+        }
+        if (Crud::PAGE_NEW === $pageName) {
             return [$program, $prayerName, $number, $enable];
-        } elseif (Crud::PAGE_EDIT === $pageName) {
+        }
+        if (Crud::PAGE_EDIT === $pageName) {
             return [$program, $prayerName, $number, $enable];
         }
     }

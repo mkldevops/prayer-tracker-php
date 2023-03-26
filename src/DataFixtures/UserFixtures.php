@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
 use App\Entity\User;
@@ -21,7 +23,8 @@ class UserFixtures extends Fixture
             $user->setUsername($item['username'])
                 ->setPassword($this->passwordEncoder->encodePassword($user, $item['password']))
                 ->setEnable(true)
-                ->setRoles($item['roles']);
+                ->setRoles($item['roles'])
+            ;
             $manager->persist($user);
         }
 
