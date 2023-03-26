@@ -24,7 +24,7 @@ class Program implements Stringable
     use TimestampableEntity;
 
     #[ORM\OneToMany(targetEntity: Objective::class, mappedBy: 'program', orphanRemoval: true)]
-    private ?Collection $objectives;
+    private Collection $objectives;
 
     #[ORM\JoinColumn(nullable: false)]
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'programs')]
@@ -50,7 +50,7 @@ class Program implements Stringable
     }
 
     /**
-     * @return Collection|Objective[]
+     * @return Collection<int, Objective>
      */
     public function getObjectives(): Collection
     {
@@ -85,7 +85,7 @@ class Program implements Stringable
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): self
+    public function setUser(?User $user): self
     {
         $this->user = $user;
 

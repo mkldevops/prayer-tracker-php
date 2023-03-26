@@ -6,6 +6,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Objective;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -29,29 +30,19 @@ class ObjectiveCrudController extends AbstractCrudController
         ;
     }
 
+    /**
+     * @return array<FieldInterface>
+     */
     public function configureFields(string $pageName): iterable
     {
-        $program = AssociationField::new('program');
-        $prayerName = AssociationField::new('prayerName');
-        $number = IntegerField::new('number');
-        $enable = Field::new('enable');
-        $id = IntegerField::new('id', 'ID');
-        $createdAt = DateTimeField::new('createdAt');
-        $updatedAt = DateTimeField::new('updatedAt');
-        $prayers = AssociationField::new('prayers');
-        $user = TextareaField::new('user');
-
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $user, $program, $prayerName, $number, $enable, $createdAt];
-        }
-        if (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $number, $enable, $createdAt, $updatedAt, $program, $prayerName, $prayers];
-        }
-        if (Crud::PAGE_NEW === $pageName) {
-            return [$program, $prayerName, $number, $enable];
-        }
-        if (Crud::PAGE_EDIT === $pageName) {
-            return [$program, $prayerName, $number, $enable];
-        }
+        yield IntegerField::new('id', 'ID')->hideOnForm();
+        yield AssociationField::new('program');
+        yield AssociationField::new('prayerName');
+        yield IntegerField::new('number');
+        yield Field::new('enable');
+        yield AssociationField::new('prayers');
+        yield TextareaField::new('user');
+        yield DateTimeField::new('createdAt')->hideOnForm();
+        yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 }

@@ -19,17 +19,22 @@ class ProgramManager
     use LoggerTrait;
     use SerializerTrait;
 
-    public function __construct(public PrayerRepository $prayerRepository)
-    {
+    public function __construct(
+        readonly public PrayerRepository $prayerRepository
+    ){
     }
 
+    /**
+     * @return array<string, array<string, int>>
+     */
     public function stats(Program $program, int $daysAgo): array
     {
-        $from = (new DateTime())->setTimestamp(strtotime(sprintf('%d days ago', $daysAgo)));
+        $from = (new DateTime())->setTimestamp((int) strtotime(sprintf('%d days ago', $daysAgo)));
         $current = clone $from;
         $data = [];
+
         while ($current->getTimestamp() <= time()) {
-            foreach ($program->getObjectives()->toArray() as $objective) {
+            foreach ($program->getObjectives() as $objective) {
                 $data[$objective->getPrayerName()->getName()][$current->format('d M')] = 0;
             }
             $current->add(new DateInterval('P1D'));

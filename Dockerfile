@@ -1,4 +1,6 @@
-FROM php:8.0-apache
+#syntax=docker/dockerfile:1.4
+
+FROM php:8.1-apache
 
 RUN usermod -u 48 www-data && groupmod -g 48 www-data
 RUN mkdir -p -m 777 /opt/apache/sessiontmp5/

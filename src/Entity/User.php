@@ -13,11 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Stringable;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
 {
     use EnableEntityTrait;
     use IdEntityTrait;
@@ -26,6 +27,9 @@ class User implements UserInterface, Stringable
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     private ?string $username = null;
 
+    /**
+     * @var array<string>
+     */
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
@@ -65,6 +69,7 @@ class User implements UserInterface, Stringable
 
     /**
      * @see UserInterface
+     * @return array<string>
      */
     public function getRoles(): array
     {
@@ -75,6 +80,9 @@ class User implements UserInterface, Stringable
         return array_unique($roles);
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -103,6 +111,16 @@ class User implements UserInterface, Stringable
     public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
     }
 
     /**

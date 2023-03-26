@@ -7,7 +7,7 @@ GIT			 	= git
 SYMFONY_BIN		= symfony
 SYMFONY		 	= $(SYMFONY_BIN) console
 COMPOSER	  	= $(SYMFONY_BIN) composer
-DOCKER-COMPOSE	= @docker-compose
+DOCKER-COMPOSE	= @docker compose
 .DEFAULT_GOAL 	= help
 #.PHONY		 = # Not needed for now
 

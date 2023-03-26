@@ -37,6 +37,10 @@ class PrayerManager
             throw new AppException('the goal is achieved');
         }
 
+        if (null === $objective->getProgram()) {
+            throw new AppException('This objective have not program');
+        }
+
         $prayer = new Prayer();
         $prayer->setUser($user)
             ->setObjective($objective)
