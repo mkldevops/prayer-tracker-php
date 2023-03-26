@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Manager;
 
-use DateTime;
-use DateInterval;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Exception\AppException;
 use App\Repository\ObjectiveRepository;
 use App\Repository\PrayerRepository;
+use DateInterval;
+use DateTime;
 use Fardus\Traits\Symfony\Manager\EntityManagerTrait;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Fardus\Traits\Symfony\Manager\SerializerTrait;

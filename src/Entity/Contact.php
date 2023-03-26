@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use DateTime;
-use DateTimeInterface;
 use App\Repository\ContactRepository;
 use App\Trait\EnableEntityTrait;
 use App\Trait\IdEntityTrait;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Fardus\Traits\Symfony\Entity\EmailEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;

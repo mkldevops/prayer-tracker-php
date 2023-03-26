@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use Stringable;
 use App\Repository\PrayerNameRepository;
 use App\Trait\EnableEntityTrait;
 use App\Trait\IdEntityTrait;
@@ -12,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Fardus\Traits\Symfony\Entity\DescriptionEntity;
 use Fardus\Traits\Symfony\Entity\NameEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Stringable;
 
 #[ORM\Entity(repositoryClass: PrayerNameRepository::class)]
 class PrayerName implements Stringable

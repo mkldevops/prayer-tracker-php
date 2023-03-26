@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Controller\Api;
 
-use Exception;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Manager\PrayerManager;
+use Exception;
 use Fardus\Traits\Symfony\Controller\ResponseTrait;
 use Fardus\Traits\Symfony\Manager\LoggerTrait;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
