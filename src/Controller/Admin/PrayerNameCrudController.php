@@ -40,12 +40,15 @@ class PrayerNameCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $name, $description, $enable, $createdAt];
         }
+
         if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $name, $description, $enable, $createdAt, $updatedAt];
         }
+
         if (Crud::PAGE_NEW === $pageName) {
             return [$name, $description, $enable];
         }
+
         if (Crud::PAGE_EDIT === $pageName) {
             return [$name, $description, $enable];
         }

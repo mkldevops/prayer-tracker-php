@@ -10,17 +10,13 @@ use App\Entity\Program;
 use App\Exception\AppException;
 use App\Repository\ObjectiveRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use Fardus\Traits\Symfony\Manager\LoggerTrait;
-use Fardus\Traits\Symfony\Manager\SerializerTrait;
 
-class ObjectiveManager
+readonly class ObjectiveManager
 {
-    use LoggerTrait;
-    use SerializerTrait;
-
-    public function __construct(public EntityManagerInterface $entityManager, public ObjectiveRepository $objectiveRepository)
-    {
-    }
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private ObjectiveRepository $objectiveRepository
+    ) {}
 
     /**
      * @throws AppException

@@ -12,7 +12,7 @@ class PrayerNameFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        foreach (self::provider() as $item) {
+        foreach ($this->provider() as $item) {
             $prayer = (new PrayerName())->setName($item['name'])->setDescription($item['description']);
             $manager->persist($prayer);
         }
@@ -20,7 +20,10 @@ class PrayerNameFixtures extends Fixture
         $manager->flush();
     }
 
-    private static function provider(): array
+    /**
+     * @return array<array>
+     */
+    private function provider(): array
     {
         return [
             ['name' => 'Adh–dhouhr', 'description' => 'C’est la prière que l’on accomplit à la mi-journée. Elle est composée de quatre rak^ah (unités de prière).'],

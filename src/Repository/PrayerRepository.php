@@ -13,7 +13,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
-use Fardus\Traits\Symfony\Manager\LoggerTrait;
 
 /**
  * @extends ServiceEntityRepository<Prayer>
@@ -25,8 +24,6 @@ use Fardus\Traits\Symfony\Manager\LoggerTrait;
  */
 class PrayerRepository extends ServiceEntityRepository
 {
-    use LoggerTrait;
-
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Prayer::class);
@@ -62,10 +59,13 @@ class PrayerRepository extends ServiceEntityRepository
                 ->getSingleScalarResult()
             ;
         } catch (NonUniqueResultException|NoResultException $e) {
-            throw new AppException($e->getMessage(), 0, $e);
+            throw new AppException(message: $e->getMessage(), previous: $e);
         }
     }
 
+    /**
+     * @return array<int, array<string, int|string>>
+     */
     public function statsOfProgram(Program $program, DateTime $from): array
     {
         return $this->createQueryBuilder('p')
@@ -87,7 +87,7 @@ class PrayerRepository extends ServiceEntityRepository
     /**
      * @throws AppException
      */
-    public function countDay(Program $program, DateTime $from, DateTime $until)
+    public function countDay(Program $program, DateTime $from, DateTime $until): int
     {
         try {
             return (int) $this->createQueryBuilder('p')
@@ -102,7 +102,7 @@ class PrayerRepository extends ServiceEntityRepository
                 ->getSingleScalarResult()
             ;
         } catch (NonUniqueResultException|NoResultException $e) {
-            throw new AppException($e->getMessage(), 0, $e);
+            throw new AppException(message: $e->getMessage(), previous: $e);
         }
     }
 }

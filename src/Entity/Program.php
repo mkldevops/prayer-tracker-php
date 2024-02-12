@@ -7,23 +7,22 @@ namespace App\Entity;
 use App\Repository\ProgramRepository;
 use App\Trait\EnableEntityTrait;
 use App\Trait\IdEntityTrait;
+use App\Trait\NameEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Fardus\Traits\Symfony\Entity\NameEntityTrait;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Stringable;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: ProgramRepository::class)]
-class Program implements Stringable
+class Program implements Stringable, HasUserPropertyInterface
 {
     use EnableEntityTrait;
     use IdEntityTrait;
     use NameEntityTrait;
     use TimestampableEntity;
 
-    #[ORM\OneToMany(targetEntity: Objective::class, mappedBy: 'program', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'program', targetEntity: Objective::class, orphanRemoval: true)]
     private Collection $objectives;
 
     #[ORM\JoinColumn(nullable: false)]
@@ -85,7 +84,7 @@ class Program implements Stringable
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 

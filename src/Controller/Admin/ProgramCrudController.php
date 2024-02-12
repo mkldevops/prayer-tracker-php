@@ -43,12 +43,15 @@ class ProgramCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $dayObjective, $name, $enable, $createdAt, $objectives, $user];
         }
+
         if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
         }
+
         if (Crud::PAGE_NEW === $pageName) {
             return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
         }
+
         if (Crud::PAGE_EDIT === $pageName) {
             return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
         }

@@ -40,12 +40,15 @@ class PrayerCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $accomplishedAt, $createdAt, $prayerName, $objective, $user];
         }
+
         if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
         }
+
         if (Crud::PAGE_NEW === $pageName) {
             return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
         }
+
         if (Crud::PAGE_EDIT === $pageName) {
             return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
         }

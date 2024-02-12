@@ -13,15 +13,4 @@ class ContactCrudController extends AbstractCrudController
     {
         return Contact::class;
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
 }

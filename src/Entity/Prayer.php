@@ -14,7 +14,7 @@ use Stringable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PrayerRepository::class)]
-class Prayer implements Stringable
+class Prayer implements Stringable, HasUserPropertyInterface
 {
     use IdEntityTrait;
     use TimestampableEntity;
@@ -67,7 +67,7 @@ class Prayer implements Stringable
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): self
+    public function setUser(?UserInterface $user): static
     {
         $this->user = $user;
 

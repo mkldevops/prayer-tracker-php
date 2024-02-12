@@ -9,23 +9,17 @@ use App\Exception\AppException;
 use App\Repository\PrayerRepository;
 use DateInterval;
 use DateTime;
-use Fardus\Traits\Symfony\Manager\EntityManagerTrait;
-use Fardus\Traits\Symfony\Manager\LoggerTrait;
-use Fardus\Traits\Symfony\Manager\SerializerTrait;
 
-class ProgramManager
+readonly class ProgramManager
 {
-    use EntityManagerTrait;
-    use LoggerTrait;
-    use SerializerTrait;
-
     public function __construct(
-        readonly public PrayerRepository $prayerRepository
-    ){
-    }
+        public PrayerRepository $prayerRepository
+    ) {}
 
     /**
      * @return array<string, array<string, int>>
+     *
+     * @throws AppException
      */
     public function stats(Program $program, int $daysAgo): array
     {
@@ -35,16 +29,22 @@ class ProgramManager
 
         while ($current->getTimestamp() <= time()) {
             foreach ($program->getObjectives() as $objective) {
-                $data[$objective->getPrayerName()->getName()][$current->format('d M')] = 0;
+                $data[$objective->getPrayerName()?->getName()][$current->format('d M')] = 0;
             }
+
             $current->add(new DateInterval('P1D'));
         }
 
         $result = $this->prayerRepository->statsOfProgram($program, $from);
 
         foreach ($result as $item) {
-            $date = DateTime::createFromFormat('Y-m-d', $item['date'])->format('d M');
-            $data[$item['name']][$date] = (int) $item['nb'];
+            $date = DateTime::createFromFormat('Y-m-d', (string) $item['date']);
+            if (false === $date) {
+                throw new AppException('Invalid date');
+            }
+
+            $format = $date->format('d M');
+            $data[(string) $item['name']][$format] = (int) $item['nb'];
         }
 
         return $data;

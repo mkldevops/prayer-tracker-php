@@ -9,6 +9,7 @@ use App\Entity\Program;
 use App\Form\ObjectiveType;
 use App\Form\ProgramType;
 use App\Repository\ProgramRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,6 +19,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route(path: '/program')]
 class ProgramController extends AbstractController
 {
+    public function __construct(
+        readonly private EntityManagerInterface $entityManager
+    ) {}
+
     #[Route(path: '/', name: 'program_index', methods: ['GET'])]
     public function index(ProgramRepository $programRepository): Response
     {
@@ -34,10 +39,9 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
             $program->setUser($this->getUser());
-            $entityManager->persist($program);
-            $entityManager->flush();
+            $this->entityManager->persist($program);
+            $this->entityManager->flush();
 
             $this->addFlash('success', sprintf('Great ! your program %s is added successfully', $program));
 
@@ -53,8 +57,8 @@ class ProgramController extends AbstractController
     #[Route(path: '/{id}', name: 'program_show', methods: ['GET', 'POST'])]
     public function show(Request $request, TranslatorInterface $translator, Program $program = null): Response
     {
-        if (null === $program || $program->getUser() !== $this->getUser()) {
-            $this->addFlash('info', $translator->trans('You don\'t have a program with id '.$request->get('id')));
+        if (!$program instanceof Program || $program->getUser() !== $this->getUser()) {
+            $this->addFlash('info', $translator->trans("You don't have a program with id ".$request->get('id')));
 
             return $this->redirectToRoute('app_home');
         }
@@ -74,7 +78,7 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('program_show', ['id' => $program->getId()]);
         }
@@ -89,9 +93,8 @@ class ProgramController extends AbstractController
     public function delete(Request $request, Program $program): Response
     {
         if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($program);
-            $entityManager->flush();
+            $this->entityManager->remove($program);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('program_index');

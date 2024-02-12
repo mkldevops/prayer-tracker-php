@@ -6,28 +6,27 @@ namespace App\Manager;
 
 use App\Entity\Objective;
 use App\Entity\Prayer;
+use App\Entity\Program;
 use App\Exception\AppException;
+use App\Manager\Dto\ObjectiveDto;
+use App\Manager\Dto\ProgramDto;
 use App\Repository\ObjectiveRepository;
 use App\Repository\PrayerRepository;
 use DateInterval;
 use DateTime;
-use Fardus\Traits\Symfony\Manager\EntityManagerTrait;
-use Fardus\Traits\Symfony\Manager\LoggerTrait;
-use Fardus\Traits\Symfony\Manager\SerializerTrait;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class PrayerManager
+readonly class PrayerManager
 {
-    use EntityManagerTrait;
-    use LoggerTrait;
-    use SerializerTrait;
-
-    public function __construct(public PrayerRepository $prayerRepository, public ObjectiveRepository $objectiveRepository)
-    {
-    }
+    public function __construct(
+        private PrayerRepository $prayerRepository,
+        private ObjectiveRepository $objectiveRepository,
+        private EntityManagerInterface $entityManager
+    ) {}
 
     /**
-     * @return array{objective: array{count: int, number: null|int, percent: float, sub: int, objective: null|int}, program: array{count: int, number: int}}
+     * @return array{objective: ObjectiveDto, program: ProgramDto}
      *
      * @throws AppException
      */
@@ -37,7 +36,7 @@ class PrayerManager
             throw new AppException('the goal is achieved');
         }
 
-        if (null === $objective->getProgram()) {
+        if (!$objective->getProgram() instanceof Program) {
             throw new AppException('This objective have not program');
         }
 
@@ -58,17 +57,17 @@ class PrayerManager
         $numberProgram = $this->objectiveRepository->sumNumberOfProgram($objective->getProgram());
 
         return [
-            'objective' => [
-                'count' => $countObjective,
-                'number' => $objective->getNumber(),
-                'percent' => round($countObjective / $objective->getNumber() * 100, 2),
-                'sub' => $objective->getNumber() - $countObjective,
-                'objective' => $objective->getId(),
-            ],
-            'program' => [
-                'count' => $countProgram,
-                'number' => $numberProgram,
-            ],
+            'objective' => new ObjectiveDto(
+                count: $countObjective,
+                number: $objective->getNumber(),
+                percent: round($countObjective / $objective->getNumber() * 100, 2),
+                sub: $objective->getNumber() - $countObjective,
+                objective: $objective->getId(),
+            ),
+            'program' => new ProgramDto(
+                count: $countProgram,
+                number: $numberProgram,
+            ),
         ];
     }
 

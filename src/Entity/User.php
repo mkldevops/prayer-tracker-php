@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, \Stringable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringable
 {
     use EnableEntityTrait;
     use IdEntityTrait;
@@ -36,7 +36,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     #[ORM\Column(type: 'string')]
     private ?string $password = null;
 
-    #[ORM\OneToMany(targetEntity: Program::class, mappedBy: 'user', orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Program::class, orphanRemoval: true)]
     private ?Collection $programs;
 
     public function __construct()
@@ -69,6 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
 
     /**
      * @see UserInterface
+     *
      * @return array<string>
      */
     public function getRoles(): array
