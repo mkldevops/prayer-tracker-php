@@ -3,42 +3,29 @@
 {% block title %}Log in!{% endblock %}
 
 {% block body %}
-<div class="offset-sm-4 col-sm-4">
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+<form method="post">
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.username }}, <a href="{{ path('app_logout') }}">{{ 'Logout'|trans }}</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 my-3 font-weight-bold text-center">{{ 'Please sign in'|trans }}</h1>
-        <div class="mt-5 form-group">
-            <input type="text" value="{{ last_username }}" name="username" placeholder="{{ 'Username'|trans }}" id="inputUsername" class="form-control" required autofocus>
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
         </div>
-        <div class="my-4 form-group">
-            <input type="password" name="password" id="inputPassword" placeholder="{{ 'Password'|trans }}" class="form-control" required>
-        </div>
+    {% endif %}
 
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername">Username</label>
+    <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" autocomplete="username" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
-        <div class="form-group form-check">
-            <label>
-                <input type="checkbox" name="_remember_me"> {{ 'Remember me'|trans }}
-            </label>
-        </div>
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
 
-        <div class="text-center">
-            <button class="btn btn-lg btn-block btn-info" type="submit"><i class="fas fa-sign-in-alt"></i> {{ 'Connect you'|trans }}</button>
-        </div>
-
-
-        <div class="mt-4 text-center">
-            <a href="{{ path('app_register') }}" class="btn btn-link"><i class="fas fa-user-edit"></i> {{ 'Register you'|trans }}</a>
-        </div>
-    </form>
-</div>
+    <button class="btn btn-lg btn-primary" type="submit">
+        Sign in
+    </button>
+</form>
 {% endblock %}

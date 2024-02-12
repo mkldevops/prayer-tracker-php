@@ -1,9 +1,0 @@
-version: "3"
-services:
-    app:
-        build: .
-        container_name: "${PROJECT_NAME}-app"
-        environment:
-            TZ: "Europe/Paris"
-        ports:
-            - "${PROJECT_APP_PORT}:80"

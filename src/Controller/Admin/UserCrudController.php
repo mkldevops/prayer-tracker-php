@@ -43,12 +43,15 @@ class UserCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $username, $enable, $createdAt, $programs];
         }
+
         if (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $username, $roles, $password, $enable, $createdAt, $updatedAt, $programs];
         }
+
         if (Crud::PAGE_NEW === $pageName) {
             return [$username, $roles, $enable];
         }
+
         if (Crud::PAGE_EDIT === $pageName) {
             return [$username, $roles, $enable];
         }

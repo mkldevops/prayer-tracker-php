@@ -12,7 +12,6 @@ parameters:
 
     ignoreErrors:
         - "#type mapping mismatch: property can contain#"
-        - "#Do not use chained method calls. Put each on separated lines.#"
 
     excludePaths:
         - src/Kernel.php

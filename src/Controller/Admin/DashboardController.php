@@ -12,6 +12,7 @@ use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Menu\MenuItemInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Iterator;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,9 @@ class DashboardController extends AbstractDashboardController
         return Crud::new()->setDateFormat('dd/MM/yyyy')->setDateTimeFormat('dd/MM/yyyy h:mm A zzzz');
     }
 
+    /**
+     * @return Iterator<MenuItemInterface>
+     */
     public function configureMenuItems(): Iterator
     {
         yield MenuItem::linktoRoute('Homepage', 'fas fa-home', 'app_home');

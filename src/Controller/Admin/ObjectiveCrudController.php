@@ -31,18 +31,26 @@ class ObjectiveCrudController extends AbstractCrudController
     }
 
     /**
-     * @return array<FieldInterface>
+     * @return FieldInterface[]
      */
     public function configureFields(string $pageName): iterable
     {
         yield IntegerField::new('id', 'ID')->hideOnForm();
+
         yield AssociationField::new('program');
+
         yield AssociationField::new('prayerName');
+
         yield IntegerField::new('number');
+
         yield Field::new('enable');
+
         yield AssociationField::new('prayers');
+
         yield TextareaField::new('user');
+
         yield DateTimeField::new('createdAt')->hideOnForm();
+
         yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 }

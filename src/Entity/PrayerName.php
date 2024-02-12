@@ -5,21 +5,21 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\PrayerNameRepository;
+use App\Trait\DescriptionEntityTrait;
 use App\Trait\EnableEntityTrait;
 use App\Trait\IdEntityTrait;
+use App\Trait\NameEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Fardus\Traits\Symfony\Entity\DescriptionEntity;
-use Fardus\Traits\Symfony\Entity\NameEntity;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Stringable;
 
 #[ORM\Entity(repositoryClass: PrayerNameRepository::class)]
 class PrayerName implements Stringable
 {
-    use DescriptionEntity;
+    use DescriptionEntityTrait;
     use EnableEntityTrait;
     use IdEntityTrait;
-    use NameEntity;
+    use NameEntityTrait;
     use TimestampableEntity;
 
     public function __construct()

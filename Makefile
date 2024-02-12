@@ -1,159 +1,135 @@
-#!make
+include .env
+ifneq ("$(wildcard .env.local)","")
+	include .env.local
+endif
 
-# Setup ————————————————————————————————————————————————————————————————————————
-SHELL			= bash
-EXEC_PHP	  	= php
-GIT			 	= git
-SYMFONY_BIN		= symfony
-SYMFONY		 	= $(SYMFONY_BIN) console
-COMPOSER	  	= $(SYMFONY_BIN) composer
-DOCKER-COMPOSE	= @docker compose
-.DEFAULT_GOAL 	= help
-#.PHONY		 = # Not needed for now
+isContainerRunning := $(shell docker info > /dev/null 2>&1 && docker ps | grep "${PROJECT_NAME}-api" > /dev/null 2>&1 && echo 1 || echo 0)
 
--include .env
--include .env.local
+env			= dev
+DOCKER		= docker compose
+COMPOSER	= symfony composer
+CONSOLE		= APP_ENV=$(env) symfony console
+GIT			= @git
 
-## —— 🐝 The Symfony Makefile 🐝 ———————————————————————————————————
+.DEFAULT_GOAL := sync
+
+sync: composer-install docker-up sf-serve doctrine-reset fixtures-load ## Install and load
+
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-## —— Composer 🧙‍♂️ ————————————————————————————————————————————————————————————
-install: symfony composer.lock ## Install vendors according to the current composer.lock file
-	$(COMPOSER) install -n -q
+sf-serve:
+	symfony server:stop
+	symfony serve -d
 
-update: bin-install composer.json ## Update vendors according to the composer.json file
-	$(COMPOSER) update
+sf-cc:
+	@chmod -R 777 ./
+	$(CONSOLE) c:c
 
-## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
-symfony: /usr/bin/symfony
+composer-install:
+	$(COMPOSER) install
 
-sf: symfony ## List all Symfony commands
-	$(SYMFONY)
+composer-update:
+	$(COMPOSER) update --with-all-dependencies
 
-cc: symfony ## Clear the cache. DID YOU CLEAR YOUR CACHE????
-	$(SYMFONY) c:c
+database-drop:
+	$(CONSOLE) doctrine:schema:drop --force --full-database -q
 
-warmup: symfony ## Warmump the cache
-	$(SYMFONY) cache:warmup
+doctrine-migration:
+	$(CONSOLE) make:migration
 
-fix-perms: ## Fix permissions of all var files
-	@chmod -R 777 var/*
+doctrine-migrate: ## Apply doctrine migrate
+	$(CONSOLE) doctrine:migrations:migrate -n -q --allow-no-migration
 
-assets: symfony purge ## Install the assets with symlinks in the public folder
-	$(SYMFONY) assets:install public/ --symlink --relative
+doctrine-schema-create:
+	$(CONSOLE) doctrine:schema:create
 
-rm-var: ## Purge cache and logs
-	@rm -rf var/cache/* var/logs/*
+doctrine-reset: database-drop doctrine-migrate
+doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
 
-purge: rm-var cc warmup assets fix-perms ## Purge symfony project (assets, permissions, wramup)
+fixtures-load: #doctrine-reset ## Load fixtures
+	$(CONSOLE) doctrine:fixtures:load -n $q
 
-routes: symfony ## get routes of project
-	$(SYMFONY) debug:router
+lint:
+	$(CONSOLE) lint:container $q
+	$(CONSOLE) lint:yaml --parse-tags config/ $q
+	$(CONSOLE) lint:twig templates/ $q
+	$(CONSOLE) doctrine:schema:validate --skip-sync $q
 
-controller: symfony
-	$(SYMFONY) make:controller
+stan:
+	@./vendor/bin/phpstan analyse $q --memory-limit 256M
 
-entity: symfony
-	$(SYMFONY) make:entity
+cs-fix:
+	@test -f ./vendor/bin/php-cs-fixer && ./vendor/bin/php-cs-fixer fix $q --allow-risky=yes || echo 'no cs-fix'
 
-## —— Symfony doctrine 💻 ————————————————————————————————————————————————————————
-doctrine-validate: symfony ## Check validate schema
-	$(SYMFONY) doctrine:schema:validate
+rector:
+	@test -f ./vendor/bin/rector && ./vendor/bin/rector --no-progress-bar process $q || echo 'no rector'
 
-doctrine-migration: symfony ## Make migration structure of databases
-	$(SYMFONY) make:migration
+infection: ## Run infection tests
+	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none || echo 'no infection'
 
-doctrine-migrate: symfony doctrine-create-database ## Migrate database structure
-	$(SYMFONY) doctrine:migrations:migrate -n
+analyze: lint cs-fix rector       #infection ## Run all analysis tools
 
-doctrine-create-database: symfony ## Add database if not exists
-	$(SYMFONY) doctrine:database:create --if-not-exists
+test: ## Run tests
+	APP_ENV=test ./vendor/bin/phpunit $q $(c)
 
-load-fixtures: symfony ## load fixtures
-	 $(SYMFONY) doctrine:fixtures:load -n
+test-all: ## Run all tests
+	@$(MAKE) --no-print-directory database-drop env=test
+	@$(MAKE) --no-print-directory doctrine-schema-create env=test
+	@$(MAKE) --no-print-directory fixtures-load env=test
+	@$(MAKE) --no-print-directory test env=test
 
-load-database: symfony ## Build the db, control the schema validity, load fixtures and check the migration status
-	$(SYMFONY) doctrine:cache:clear-metadata
-	$(SYMFONY) doctrine:database:create --if-not-exists
-	$(SYMFONY) doctrine:schema:drop --force
-	$(SYMFONY) doctrine:schema:create
-	$(SYMFONY) doctrine:schema:validate
-	$(SYMFONY) doctrine:fixtures:load -n
-	$(SYMFONY) doctrine:schema:validate
+## —— Git ————————————————————————————————————————————————————————————————
+git-clean-branches: ## Clean merged branches
+	git remote prune origin
+	(git branch --merged | egrep -v "(^\*|main|master|dev)" | xargs git branch -d) || true
 
-## —— Symfony binary 💻 ————————————————————————————————————————————————————————
+git-rebase: ## Rebase the current branch
+	$(GIT) pull --rebase $q
+	$(GIT) pull --rebase origin main $q
 
-serve: symfony ## Serve the application with HTTPS support
-	$(SYMFONY_BIN) serve --port=$(PROJECT_PORT_APP)
+message ?= $(shell git branch --show-current | sed -E 's/^([0-9]+)-([^-]+)-(.+)/\2: \#\1 \3/' | sed "s/-/ /g")
+git-auto-commit:
+	$(GIT) add .
+	$(GIT) commit -m "${message}" -q || true
 
-unserve: symfony ## Stop the web server
-	$(SYMFONY_BIN) server:stop
+current_branch=$(shell git rev-parse --abbrev-ref HEAD)
+git-push:
+	$(GIT) push origin "$(current_branch)" --force-with-lease --force-if-includes
 
-## —— Tests ✅ —————————————————————————————————————————————————————————————————
-test: phpunit.xml* ## Launch main functionnal and unit tests
-	./bin/phpunit --testsuite=main --stop-on-failure
+#commit: q=-q
+commit: ## Commit and push the current branch
+	@$(MAKE) --no-print-directory analyze
+	@$(MAKE) --no-print-directory test-all
+	@$(MAKE) --no-print-directory git-auto-commit git-push ## Commit and push the current branch
 
-test-external: phpunit.xml* ## Launch tests implying external resources (api, services...)
-	./bin/phpunit --testsuite=external --stop-on-failure
+## —— Docker ————————————————————————————————————————————————————————————————
+docker-install: Dockerfile compose.yaml docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
 
-test-all: phpunit.xml* ## Launch all tests
-	./bin/phpunit --stop-on-failure
+docker-is-running:
+ifeq ($(isContainerRunning), 1)
+	@echo "Docker not running"
+	@exit 1
+endif
 
-## —— Coding standards ✨ ——————————————————————————————————————————————————————
-cs: codesniffer stan ## Launch check style and static analysis
+docker-up: ## Start the docker container
+	$(DOCKER) up -d
 
-codesniffer: ## Run php_codesniffer only
-	./vendor/squizlabs/php_codesniffer/bin/phpcs --standard=phpcs.xml -n -p src/
+docker-logs: ## List the docker containers
+	$(DOCKER) logs -f
 
-stan: ## Run PHPStan only
-	./vendor/bin/phpstan analyse
+docker-ps: ## List the docker containers
+	$(DOCKER) ps -a
 
-cs-fix: ## Run php-cs-fixer and fix the code.
-	./vendor/bin/php-cs-fixer fix --allow-risky=yes
+docker-build: ## Build the docker container
+	$(DOCKER) build
 
-sonar: sonar-project.properties ## sonar scan src directory
-	sonar-scanner -Dsonar.projectVersion=$(VERSION)
+docker-down: ## down the stack
+	$(DOCKER) down --remove-orphans
 
-## —— Stats 📜 —————————————————————————————————————————————————————————————————
-stats: ## Commits by hour for the main author of this project
-	$(GIT) log --date=iso | perl -nalE 'if (/^Date:\s+[\d-]{10}\s(\d{2})/) { say $$1+0 }' | sort | uniq -c|perl -MList::Util=max -nalE '$$h{$$F[1]} = $$F[0]; }{ $$m = max values %h; foreach (0..23) { $$h{$$_} = 0 if not exists $$h{$$_} } foreach (sort {$$a <=> $$b } keys %h) { say sprintf "%02d - %4d %s", $$_, $$h{$$_}, "*"x ($$h{$$_} / $$m * 50); }'
+docker-sh: docker-up ## Connect to the docker container
+	$(DOCKER) exec -it api zsh
 
-## —— Docker 🐳 ————————————————————————————————————————————————————————————————
-build: docker-compose.yaml ## build services to image
-	$(DOCKER-COMPOSE) build $(c)
+docker-restart: docker-down docker-up docker-ps ## Reset the docker container
 
-up: docker-compose.yaml ## up services for running containers
-	$(DOCKER-COMPOSE) up -d $(c)
-
-up-build: docker-compose.yaml ## up services for running containers
-	$(DOCKER-COMPOSE) up -d --build $(c)
-
-start: docker-compose.yaml ## start containers
-	$(DOCKER-COMPOSE) start $(c)
-
-down: docker-compose.yaml ## down containers
-	$(DOCKER-COMPOSE) down $(c)
-
-destroy: docker-compose.yaml ## down containers & removes orphans
-	$(DOCKER-COMPOSE) down -v --remove-orphans $(c)
-
-stop: docker-compose.yaml ## stop containers
-	$(DOCKER-COMPOSE) stop $(c)
-
-restart: docker-compose.yaml stop up ps ## stop & re-up containers
-
-logs: docker-compose.yaml ## logs of all containers
-	$(DOCKER-COMPOSE) logs --tail=100 -f $(c)
-
-logs-app: docker-compose.yaml ## logs of container app
-	$(DOCKER-COMPOSE) logs --tail=100 -f app
-
-ps: docker-compose.yaml ## ps containers
-	$(DOCKER-COMPOSE) ps
-
-app: docker-compose.yaml ## exec bash command for containers app
-	$(DOCKER-COMPOSE) exec app zsh $(c)
-
-prune: ## clean all containers unused
-	$(DOCKER-COMPOSE) system prune -a
+deploy: git-rebase docker-down docker-build docker-up docker-ps docker-logs ## Deploy the application

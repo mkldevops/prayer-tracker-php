@@ -1,5 +1,6 @@
-docker-compose*
+compose*
 var/cache
 var/log
 public/bundles
 vendor
+.env.local

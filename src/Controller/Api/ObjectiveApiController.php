@@ -10,18 +10,20 @@ use App\Entity\Program;
 use App\Exception\AppException;
 use App\Manager\ObjectiveManager;
 use App\Manager\PrayerManager;
-use Fardus\Traits\Symfony\Manager\LoggerTrait;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 
 #[Route('/api/objective', options: ['expose' => true], methods: ['POST'])]
 class ObjectiveApiController extends AbstractController
 {
-    use LoggerTrait;
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+    ) {}
 
     /**
      * @throws AppException
@@ -29,11 +31,11 @@ class ObjectiveApiController extends AbstractController
     #[Route('/new/{id}', name: 'api_objective_new')]
     public function new(Request $request, Program $program, ObjectiveManager $objectiveManager): JsonResponse
     {
-        $prayerName = $objectiveManager->entityManager->find(PrayerName::class, $request->get('prayerName'));
+        $prayerName = $this->entityManager->find(PrayerName::class, $request->get('prayerName'));
         $objective = $objectiveManager->new($program, $prayerName, (int) $request->get('number'));
 
         return $this->json($objective, Response::HTTP_OK, [], [
-            ObjectNormalizer::ATTRIBUTES => ['id', 'number'],
+            AbstractNormalizer::ATTRIBUTES => ['id', 'number'],
         ]);
     }
 

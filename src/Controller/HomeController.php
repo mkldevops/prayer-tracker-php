@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class HomeController extends AbstractController
 {
@@ -16,7 +17,7 @@ class HomeController extends AbstractController
     public function index(ProgramRepository $repository, UserRepository $userRepository): Response
     {
         $programs = [];
-        if (null !== $this->getUser()) {
+        if ($this->getUser() instanceof UserInterface) {
             $programs = $repository->findBy(['enable' => true, 'user' => $this->getUser()], ['createdAt' => 'desc'], 5);
         }
 

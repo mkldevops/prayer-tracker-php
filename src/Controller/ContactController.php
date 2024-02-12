@@ -12,10 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route(path: '/contact', name: 'contact')]
 class ContactController extends AbstractController
 {
-    #[Route(path: '/contact', name: 'contact')]
-    public function index(Request $request, EntityManagerInterface $manager): Response
+    public function __invoke(Request $request, EntityManagerInterface $manager): Response
     {
         $contact = new Contact();
 
@@ -32,11 +32,8 @@ class ContactController extends AbstractController
             return $this->redirectToRoute('app_home');
         }
 
-        return $this->render(
-            'contact/index.html.twig',
-            [
-                'form' => $form->createView(),
-            ]
-        );
+        return $this->render('contact/index.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
