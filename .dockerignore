@@ -1,4 +1,4 @@
-compose*
+compose*.yaml
 var/cache
 var/log
 public/bundles
