@@ -37,11 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     private ?string $password = null;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Program::class, orphanRemoval: true)]
-    private ?Collection $programs;
+    private Collection $programs;
 
     public function __construct()
     {
-        $this->enable = true;
         $this->programs = new ArrayCollection();
     }
 
@@ -134,7 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Stringa
     }
 
     /**
-     * @return Collection|Program[]
+     * @return Collection<int, Program>
      */
     public function getPrograms(): Collection
     {

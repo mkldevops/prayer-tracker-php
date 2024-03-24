@@ -31,29 +31,20 @@ class ProgramCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $dayObjective = IntegerField::new('dayObjective');
-        $name = TextField::new('name');
-        $enable = Field::new('enable');
-        $createdAt = DateTimeField::new('createdAt');
-        $updatedAt = DateTimeField::new('updatedAt');
-        $objectives = AssociationField::new('objectives');
-        $user = AssociationField::new('user');
-        $id = IntegerField::new('id', 'ID');
+        yield IntegerField::new('id', 'ID')->hideOnForm();
 
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $dayObjective, $name, $enable, $createdAt, $objectives, $user];
-        }
+        yield IntegerField::new('dayObjective');
 
-        if (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
-        }
+        yield TextField::new('name');
 
-        if (Crud::PAGE_NEW === $pageName) {
-            return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
-        }
+        yield Field::new('enable');
 
-        if (Crud::PAGE_EDIT === $pageName) {
-            return [$dayObjective, $name, $enable, $createdAt, $updatedAt, $objectives, $user];
-        }
+        yield AssociationField::new('objectives');
+
+        yield AssociationField::new('user');
+
+        yield DateTimeField::new('createdAt')->hideOnForm();
+
+        yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 }

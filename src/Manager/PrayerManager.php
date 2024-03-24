@@ -7,6 +7,7 @@ namespace App\Manager;
 use App\Entity\Objective;
 use App\Entity\Prayer;
 use App\Entity\Program;
+use App\Entity\User;
 use App\Exception\AppException;
 use App\Manager\Dto\ObjectiveDto;
 use App\Manager\Dto\ProgramDto;
@@ -30,7 +31,7 @@ readonly class PrayerManager
      *
      * @throws AppException
      */
-    public function add(Objective $objective, UserInterface $user): array
+    public function add(Objective $objective, User $user): array
     {
         if ($objective->getPrayers()->count() >= $objective->getNumber()) {
             throw new AppException('the goal is achieved');
@@ -59,10 +60,10 @@ readonly class PrayerManager
         return [
             'objective' => new ObjectiveDto(
                 count: $countObjective,
-                number: $objective->getNumber(),
-                percent: round($countObjective / $objective->getNumber() * 100, 2),
+                number: (int) $objective->getNumber(),
+                percent: round($countObjective / (int) $objective->getNumber() * 100, 2),
                 sub: $objective->getNumber() - $countObjective,
-                objective: $objective->getId(),
+                objective: (int) $objective->getId(),
             ),
             'program' => new ProgramDto(
                 count: $countProgram,
@@ -73,10 +74,12 @@ readonly class PrayerManager
 
     /**
      * @return array<string, mixed>
+     *
+     * @throws AppException
      */
     public function stats(Objective $objective, int $daysAgo): array
     {
-        $from = (new DateTime())->setTimestamp(strtotime(sprintf('%d days ago', $daysAgo)));
+        $from = (new DateTime())->setTimestamp((int) strtotime(sprintf('%d days ago', $daysAgo)));
         $current = clone $from;
         $data = [];
         while ($current->getTimestamp() <= time()) {
@@ -86,8 +89,12 @@ readonly class PrayerManager
 
         $result = $this->prayerRepository->statsOfObjective($objective, $from);
         foreach ($result as $item) {
-            $date = DateTime::createFromFormat('Y-m-d', $item['date'])->format('d M');
-            $data[$date] = $item['nb'];
+            $date = DateTime::createFromFormat('Y-m-d', (string) $item['date']);
+            if (!$date instanceof DateTime) {
+                throw new AppException('date is not valid');
+            }
+
+            $data[$date->format('d M')] = $item['nb'];
         }
 
         return $data;

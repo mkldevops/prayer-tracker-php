@@ -6,12 +6,10 @@ namespace App\Entity;
 
 use App\Repository\PrayerRepository;
 use App\Trait\IdEntityTrait;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Stringable;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: PrayerRepository::class)]
 class Prayer implements Stringable, HasUserPropertyInterface
@@ -31,7 +29,7 @@ class Prayer implements Stringable, HasUserPropertyInterface
     private ?User $user = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $accomplishedAt = null;
+    private ?DateTimeInterface $accomplishedAt = null;
 
     public function __toString(): string
     {
@@ -67,7 +65,7 @@ class Prayer implements Stringable, HasUserPropertyInterface
         return $this->user;
     }
 
-    public function setUser(?UserInterface $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
 

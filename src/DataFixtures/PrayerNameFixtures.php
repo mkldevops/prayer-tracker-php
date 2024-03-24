@@ -21,7 +21,7 @@ class PrayerNameFixtures extends Fixture
     }
 
     /**
-     * @return array<array>
+     * @return array<array{name: string, description: string}>
      */
     private function provider(): array
     {

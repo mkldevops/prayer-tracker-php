@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: ObjectiveRepository::class)]
 #[ORM\UniqueConstraint(fields: ['program', 'prayerName'])]
-#[UniqueEntity(fields: ['program', 'prayerName'], errorPath: 'port', message: 'This port is already in use on that host.')]
+#[UniqueEntity(fields: ['program', 'prayerName'], message: 'This port is already in use on that host.', errorPath: 'port')]
 class Objective implements Stringable
 {
     use EnableEntityTrait;
@@ -24,18 +24,21 @@ class Objective implements Stringable
     use TimestampableEntity;
 
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: Program::class, inversedBy: 'objectives')]
+    #[ORM\ManyToOne(inversedBy: 'objectives')]
     private ?Program $program = null;
 
-    #[ORM\Column(type: 'integer')]
+    #[ORM\Column]
     private ?int $number = 1;
 
     #[ORM\JoinColumn(nullable: false)]
-    #[ORM\ManyToOne(targetEntity: PrayerName::class)]
+    #[ORM\ManyToOne]
     private ?PrayerName $prayerName = null;
 
-    #[ORM\OneToMany(targetEntity: Prayer::class, mappedBy: 'objective')]
-    private ?Collection $prayers;
+    /**
+     * @var Collection<int, Prayer>
+     */
+    #[ORM\OneToMany(mappedBy: 'objective', targetEntity: Prayer::class)]
+    private Collection $prayers;
 
     public function __construct()
     {
@@ -85,7 +88,7 @@ class Objective implements Stringable
     }
 
     /**
-     * @return Collection|Prayer[]
+     * @return Collection<int, Prayer>
      */
     public function getPrayers(): Collection
     {
@@ -96,7 +99,7 @@ class Objective implements Stringable
     {
         if (!$this->prayers->contains($prayer)) {
             $this->prayers[] = $prayer;
-            $prayer->setProgram($this);
+            $prayer->setObjective($this);
         }
 
         return $this;
@@ -107,16 +110,16 @@ class Objective implements Stringable
         if ($this->prayers->contains($prayer)) {
             $this->prayers->removeElement($prayer);
             // set the owning side to null (unless already changed)
-            if ($prayer->getProgram() === $this) {
-                $prayer->setProgram(null);
+            if ($prayer->getObjective() === $this) {
+                $prayer->setObjective(null);
             }
         }
 
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
-        return $this->program->getUser();
+        return $this->program?->getUser();
     }
 }

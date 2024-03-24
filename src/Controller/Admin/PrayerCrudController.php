@@ -29,28 +29,18 @@ class PrayerCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $accomplishedAt = DateTimeField::new('accomplishedAt');
-        $createdAt = DateTimeField::new('createdAt');
-        $updatedAt = DateTimeField::new('updatedAt');
-        $prayerName = AssociationField::new('prayerName');
-        $objective = AssociationField::new('objective');
-        $user = AssociationField::new('user');
-        $id = IntegerField::new('id', 'ID');
+        yield IntegerField::new('id', 'ID')->hideOnForm();
 
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $accomplishedAt, $createdAt, $prayerName, $objective, $user];
-        }
+        yield AssociationField::new('prayerName');
 
-        if (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
-        }
+        yield AssociationField::new('objective');
 
-        if (Crud::PAGE_NEW === $pageName) {
-            return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
-        }
+        yield AssociationField::new('user');
 
-        if (Crud::PAGE_EDIT === $pageName) {
-            return [$accomplishedAt, $createdAt, $updatedAt, $prayerName, $objective, $user];
-        }
+        yield DateTimeField::new('accomplishedAt')->hideOnForm();
+
+        yield DateTimeField::new('createdAt')->hideOnForm();
+
+        yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 }

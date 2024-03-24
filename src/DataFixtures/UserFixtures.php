@@ -34,7 +34,7 @@ class UserFixtures extends Fixture
     }
 
     /**
-     * @return array<array<string, string|array<string>>
+     * @return array<array{username: string, password: string, roles: array<string>}>
      */
     private function provider(): array
     {
