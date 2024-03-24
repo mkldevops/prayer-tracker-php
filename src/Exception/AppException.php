@@ -13,7 +13,7 @@ class AppException extends Exception
     public function __construct(
         string $message = '',
         ?int $code = Response::HTTP_INTERNAL_SERVER_ERROR,
-        Throwable $previous = null
+        ?Throwable $previous = null
     ) {
         parent::__construct(
             message: $message,

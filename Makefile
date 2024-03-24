@@ -12,7 +12,7 @@ CONSOLE		= APP_ENV=$(env) symfony console
 GIT			= @git
 
 ifeq ($(isContainerRunning), 1)
-	DOCKER	= docker exec -it $(PROJECT_NAME)-app
+	CONSOLE	= docker exec -it -e APP_ENV=$(env) $(PROJECT_NAME)-app symfony console
 	COMPOSER= docker exec -it $(PROJECT_NAME)-app symfony composer
 endif
 
