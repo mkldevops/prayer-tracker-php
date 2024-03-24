@@ -20,15 +20,15 @@ jobs:
       - name: Set ENV to build
         run: |
           tag=$(echo ${{github.ref}} | sed -e 's/refs\/heads\///')
-          port=8022
+          port=8102
           env=dev
           if [[ ${{github.ref}} == 'refs/tags/'* ]]; then
             tag=$(echo ${{github.ref}} | sed -e 's/refs\/tags\///')
-            port=8020
+            port=8100
             env=prod
           elif [[ ${{github.ref}} == 'refs/heads/main' ]]; then
             tag=latest
-            port=8021
+            port=8101
             env=stage
           fi
         

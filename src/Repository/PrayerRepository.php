@@ -35,7 +35,7 @@ class PrayerRepository extends ServiceEntityRepository
     public function statsOfObjective(Objective $objective, DateTime $from): array
     {
         // @var array<int, array<string, int|string>>
-        return $this->createQueryBuilder('p') // @phpstan-ignore-line
+        return $this->createQueryBuilder('p')
             ->select('DATE(p.createdAt) as date')
             ->addSelect('count(p) AS nb')
             ->where('p.objective = :p_objective')
@@ -73,7 +73,7 @@ class PrayerRepository extends ServiceEntityRepository
     public function statsOfProgram(Program $program, DateTime $from): array
     {
         // @var array<int, array<string, int|string>>
-        return $this->createQueryBuilder('p') // @phpstan-ignore-line
+        return $this->createQueryBuilder('p')
             ->select('DATE(p.createdAt) as date')
             ->addSelect('pn.name')
             ->addSelect('count(p) AS nb')

@@ -54,7 +54,7 @@ class ProgramController extends AbstractController
     }
 
     #[Route(path: '/{id}', name: 'program_show', methods: ['GET', 'POST'])]
-    public function show(Request $request, TranslatorInterface $translator, Program $program = null): Response
+    public function show(Request $request, TranslatorInterface $translator, ?Program $program = null): Response
     {
         if (!$program instanceof Program || $program->getUser() !== $this->getUser()) {
             $this->addFlash('info', $translator->trans("You don't have a program with id ".$request->get('id')));
