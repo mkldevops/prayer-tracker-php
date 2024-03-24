@@ -1,12 +1,13 @@
 version: '3'
 
 services:
-  api:
+  app:
     build: .
+    container_name: ${PROJECT_NAME}-app
     restart: always
     environment:
       APP_ENV: ${APP_ENV:-dev}
     ports:
-      - "8040:80" # HTTP
+      - "${PROJECT_APP_PORT}:80" # HTTP
     volumes:
       - .:/srv/app:rw,cached

@@ -1,0 +1,57 @@
+'You don''t have a program with id ': 'You don''t have a program with id '
+'%count% users': '%count% users'
+'Hello on Prayer Program': 'Bienvenue sur Prayer Program'
+'Connect you': 'Connecte toi'
+or: ou
+'Register you': 'Nouveau compte'
+Save: Enregistrer
+'Program "%name%"': 'Programme "%name%"'
+'Created at %date%': 'Ajouté le %date%'
+Program: Programme
+Objective: Objectif
+Update: Modifier
+Enable: Actif
+'added at %date%': 'Ajoutée le %date%'
+'Remember me': 'Se souvenir de moi'
+Username: 'Nom d''utilisateur'
+Password: 'Mot de passe'
+'Please sign in': Connection
+Logout: Déconnection
+'Edit Objective "%name%"': 'Modifier l''objectif "%name%"'
+Updat÷e: Modifier
+'Last prayers': 'Dernieres prières'
+Date: Date
+Prayer: Prière
+show: Afficher
+'Create your first program': 'Ajoute ton premier programme'
+'New Program': 'Nouveau programme'
+Home: Home
+Admin: Admin
+Register: Register
+'Add Objective on program "%program%"': 'Ajouter un objectif au programme <strong>"%program%"</strong>'
+Close: Fermer
+Agree terms : Accepter les conditions
+Plain Password: Mot de passe
+Please enter a password: Veuillez saisir un mot de passe
+Create new Program: 'Ajouter un programme'
+Cancel: 'Annuler'
+Name: Nom
+Add: Ajouter
+User: Utilisateur
+ID: ID
+Created at: Ajouté le
+Accomplished at: Accompli le
+Prayer name: Type de prière
+PrayerName: Type de prière
+Number: Nombre
+Homepage : Page d'accueil
+Name of program: Nom du programme
+Create new: 'Ajouter un programme'
+Program list: 'Liste des programmes'
+Your Program is added: 'Ton programme est maintenant disponible'
+program_show_without_objective: 'Commence maintenant par ajouter un premier objectif'
+Add new objective: 'Ajouter un objectif'
+Are you sure you want to delete this item?: Etes vous sur de vouloir supprimer cette occurence
+Contact us: Contactez nous
+Global overview: 'Synthèse globale'
+Daily objective: 'Objectif quotidien'
