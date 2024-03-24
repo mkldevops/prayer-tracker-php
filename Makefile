@@ -3,7 +3,7 @@ ifneq ("$(wildcard .env.local)","")
 	include .env.local
 endif
 
-isContainerRunning := $(shell docker info > /dev/null 2>&1 && docker ps | grep "${PROJECT_NAME}-api" > /dev/null 2>&1 && echo 1 || echo 0)
+isContainerRunning := $(shell docker ps > /dev/null 2>&1 && docker ps | grep "${PROJECT_NAME}-app" > /dev/null 2>&1 && echo 1 || echo 0)
 
 env			= dev
 DOCKER		= docker compose
@@ -11,9 +11,14 @@ COMPOSER	= symfony composer
 CONSOLE		= APP_ENV=$(env) symfony console
 GIT			= @git
 
+ifeq ($(isContainerRunning), 1)
+	DOCKER	= docker exec -it $(PROJECT_NAME)-app
+	COMPOSER= docker exec -it $(PROJECT_NAME)-app symfony composer
+endif
+
 .DEFAULT_GOAL := sync
 
-sync: composer-install docker-up doctrine-reset fixtures-load ## Install and load
+sync: composer-install db-reset fixtures-load ## Install and load
 
 help: ## Outputs this help screen
 	@grep -E '(^[a-zA-Z0-9_-]+:.*?## .*$$)|(^## )' Makefile | awk 'BEGIN {FS = ":.*?## "}{printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
@@ -32,24 +37,29 @@ composer-install:
 composer-update:
 	$(COMPOSER) update --with-all-dependencies
 
-database-drop:
-	$(CONSOLE) doctrine:schema:drop --force --full-database -q
+database-drop: ## Drop database
+	$(CONSOLE) doctrine:database:drop --force
+
+database-create: ## Drop database
+	$(CONSOLE) doctrine:database:create --if-not-exists
+
+database-schema-drop: ## Drop schema database
+	$(CONSOLE) doctrine:schema:drop --force --full-database
 
 doctrine-migration:
 	$(CONSOLE) make:migration
 
 doctrine-migrate: ## Apply doctrine migrate
-	$(CONSOLE) doctrine:migrations:migrate -n -q --allow-no-migration
+	$(CONSOLE) doctrine:migrations:migrate -n
 
 doctrine-schema-create:
 	$(CONSOLE) doctrine:schema:create
 
-doctrine-reset: database-drop doctrine-migrate
-doctrine-apply-migration: doctrine-reset doctrine-migration doctrine-reset  ## Apply doctrine migrate and reset database
+db-reset: database-drop database-create doctrine-migrate
+doctrine-apply-migration: db-reset doctrine-migration db-reset  ## Apply doctrine migrate and reset database
 
 fixtures-load: #doctrine-reset ## Load fixtures
-	$(CONSOLE) doctrine:fixtures:load -n $q
-
+	$(CONSOLE) d:fixtures:load -n $q
 lint:
 	$(CONSOLE) lint:container $q
 	$(CONSOLE) lint:yaml --parse-tags config/ $q
@@ -60,15 +70,15 @@ stan:
 	@./vendor/bin/phpstan analyse $q --memory-limit 256M
 
 cs-fix:
-	@test -f ./vendor/bin/php-cs-fixer && ./vendor/bin/php-cs-fixer fix $q --allow-risky=yes || echo 'no cs-fix'
+	@./vendor/bin/php-cs-fixer fix $q --allow-risky=yes
 
 rector:
-	@test -f ./vendor/bin/rector && ./vendor/bin/rector --no-progress-bar process $q || echo 'no rector'
+	@./vendor/bin/rector --no-progress-bar
 
 infection: ## Run infection tests
-	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none || echo 'no infection'
+	@./vendor/bin/infection --min-msi=80 --min-covered-msi=80 --threads=4 --only-covered --show-mutations --log-verbosity=none
 
-analyze: lint cs-fix rector       #infection ## Run all analysis tools
+analyze: lint stan cs-fix rector       #infection ## Run all analysis tools
 
 test: ## Run tests
 	APP_ENV=test ./vendor/bin/phpunit $q $(c)
@@ -101,7 +111,7 @@ git-push:
 commit: ## Commit and push the current branch
 	@$(MAKE) --no-print-directory analyze
 	@$(MAKE) --no-print-directory test-all
-	@$(MAKE) --no-print-directory git-auto-commit git-push ## Commit and push the current branch
+	@$(MAKE) --no-print-directory git-auto-commit git-rebase git-push ## Commit and push the current branch
 
 ## —— Docker ————————————————————————————————————————————————————————————————
 docker-install: Dockerfile compose.yaml docker-down docker-build docker-up docker-ps docker-logs ## Reset and install your environment
@@ -128,7 +138,11 @@ docker-down: ## down the stack
 	$(DOCKER) down --remove-orphans
 
 docker-sh: docker-up ## Connect to the docker container
-	$(DOCKER) exec -it api zsh
+	$(DOCKER) exec -it app zsh
+
+docker-prune:
+	@docker system prune -a
+	@docker volume prune --all
 
 docker-restart: docker-down docker-up docker-ps ## Reset the docker container
 

@@ -39,7 +39,6 @@ class ProgramController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $program->setUser($this->getUser());
             $this->entityManager->persist($program);
             $this->entityManager->flush();
 
@@ -92,7 +91,7 @@ class ProgramController extends AbstractController
     #[Route(path: '/{id}', name: 'program_delete', methods: ['DELETE'])]
     public function delete(Request $request, Program $program): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$program->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$program->getId(), (string) $request->request->get('_token'))) {
             $this->entityManager->remove($program);
             $this->entityManager->flush();
         }

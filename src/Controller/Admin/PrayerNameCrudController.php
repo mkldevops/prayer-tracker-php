@@ -30,27 +30,16 @@ class PrayerNameCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $name = TextField::new('name');
-        $description = TextField::new('description');
-        $enable = Field::new('enable');
-        $id = IntegerField::new('id', 'ID');
-        $createdAt = DateTimeField::new('createdAt');
-        $updatedAt = DateTimeField::new('updatedAt');
+        yield IntegerField::new('id', 'ID')->hideOnForm();
 
-        if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $name, $description, $enable, $createdAt];
-        }
+        yield TextField::new('name');
 
-        if (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $description, $enable, $createdAt, $updatedAt];
-        }
+        yield TextField::new('description');
 
-        if (Crud::PAGE_NEW === $pageName) {
-            return [$name, $description, $enable];
-        }
+        yield Field::new('enable');
 
-        if (Crud::PAGE_EDIT === $pageName) {
-            return [$name, $description, $enable];
-        }
+        yield DateTimeField::new('createdAt')->hideOnForm();
+
+        yield DateTimeField::new('updatedAt')->hideOnForm();
     }
 }

@@ -8,7 +8,6 @@ use App\Repository\ContactRepository;
 use App\Trait\EmailEntityTrait;
 use App\Trait\EnableEntityTrait;
 use App\Trait\IdEntityTrait;
-use DateTime;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
@@ -24,11 +23,11 @@ class Contact implements HasUserPropertyInterface
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $user = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
-    private string $message;
+    #[ORM\Column(nullable: true)]
+    private ?string $message = null;
 
     #[ORM\Column(type: 'datetime', nullable: true)]
-    private ?DateTime $readAt = null;
+    private ?DateTimeInterface $readAt = null;
 
     public function __construct()
     {
